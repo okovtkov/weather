@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import SortByName from './sort-by-name';
 import Search from './search';
 import './sort-form.scss';
+import SortByWeatherCondition from './sort-by-weather-condition';
 
 const SortForm = () => {
   return (
@@ -10,6 +11,7 @@ const SortForm = () => {
       <form action="#" method="GET">
         <SortByName />
         <Search />
+        <SortByWeatherCondition />
       </form>
     </section>
   );
