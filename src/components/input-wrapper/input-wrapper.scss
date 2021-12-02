@@ -17,6 +17,9 @@
   outline: none;
 
   transition: background-color var(--transition-base);
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
 }
 
 .input-wrapper--search input:hover {
