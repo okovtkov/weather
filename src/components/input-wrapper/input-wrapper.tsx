@@ -11,6 +11,7 @@ interface Props {
   label: string;
   iconName?: string;
   checked?: boolean;
+  placeholder?: string;
 }
 
 const InputWrapper = (props: Props) => {
@@ -31,6 +32,7 @@ const InputWrapper = (props: Props) => {
         value={props.value}
         defaultChecked={checked}
         onChange={() => setChecked(!checked)}
+        placeholder={props.placeholder}
       />
       <label htmlFor={props.id} aria-label={props.label}>
         {props.iconName && (

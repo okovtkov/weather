@@ -3,7 +3,7 @@ import './sort-form.scss';
 
 const SortByName = () => {
   return (
-    <>
+    <div className="sort-form__group">
       <InputWrapper
         className="sort-form__input-wrapper"
         type="radio"
@@ -23,7 +23,7 @@ const SortByName = () => {
         label="Сортировка по алфавиту в обратном направлении"
         iconName="arrow-up"
       />
-    </>
+    </div>
   );
 };
 
