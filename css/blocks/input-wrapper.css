@@ -66,7 +66,8 @@
 }
 
 .input-wrapper--radio label {
-  justify-content: center;
+  justify-content: space-between;
+  padding: 10px;
 }
 
 .input-wrapper--radio label:hover,

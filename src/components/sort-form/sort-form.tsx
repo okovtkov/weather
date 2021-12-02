@@ -1,5 +1,6 @@
 import classNames from 'classnames';
 import InputWrapper from '../input-wrapper/input-wrapper';
+import './sort-form.scss';
 
 const SortForm = () => {
   return (

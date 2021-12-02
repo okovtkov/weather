@@ -1,4 +1,6 @@
 import classNames from 'classnames';
+import { useState } from 'react';
+import './input-wrapper.scss';
 
 interface Props {
   className: string;
@@ -12,6 +14,8 @@ interface Props {
 }
 
 const InputWrapper = (props: Props) => {
+  const [checked, setChecked] = useState(props.checked);
+
   return (
     <div
       className={classNames(props.className, 'input-wrapper', {
@@ -25,7 +29,8 @@ const InputWrapper = (props: Props) => {
         type={props.type}
         name={props.name}
         value={props.value}
-        checked={props.checked}
+        defaultChecked={checked}
+        onChange={() => setChecked(!checked)}
       />
       <label htmlFor={props.id} aria-label={props.label}>
         {props.iconName && (
