@@ -2,13 +2,13 @@
   display: flex;
   justify-content: space-between;
   width: 100%;
-  height: 100%;
+  height: 880px;
   padding: 2px 4px 0 4px;
   box-sizing: border-box;
 }
 
 .cards__small-cards {
-  height: 100vh;
+  height: 100%;
   padding-bottom: 100px;
   overflow-y: scroll;
   -ms-overflow-style: none;
