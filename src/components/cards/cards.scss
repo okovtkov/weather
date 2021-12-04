@@ -1,0 +1,26 @@
+.cards {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  height: 100%;
+  padding: 2px 4px 0 4px;
+  box-sizing: border-box;
+}
+
+.cards__small-cards {
+  height: 100vh;
+  padding-bottom: 100px;
+  overflow-y: scroll;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  overflow: -moz-scrollbars-none;
+}
+
+.cards__small-cards::-webkit-scrollbar { 
+  width: 0;
+}
+
+.cards__small-cards > div,
+.cards__big-cards > div {
+  margin-bottom: 2px;
+}

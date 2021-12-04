@@ -1,11 +1,14 @@
 import SmallCard from '../small-card/small-card';
-import './cities.scss';
+import './cards.scss';
 
-const Cities = () => {
+const Cards = () => {
   return (
-    <section className="cities">
+    <section className="cards">
       <h2 className="visually-hidden">Результаты сортировки</h2>
-      <div className="cities__small-cards">
+      <div className="cards__small-cards">
+        <SmallCard />
+        <SmallCard />
+        <SmallCard />
         <SmallCard />
         <SmallCard />
         <SmallCard />
@@ -27,4 +30,4 @@ const Cities = () => {
   );
 };
 
-export default Cities;
+export default Cards;

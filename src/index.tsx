@@ -1,13 +1,11 @@
 import { StrictMode } from 'react';
 import ReactDOM from 'react-dom';
 import './index.scss';
-import SortForm from './components/sort-form/sort-form';
-import Cities from './components/cities/cities';
+import WeatherContent from './components/weather-content/weather-content';
 
 ReactDOM.render(
   <StrictMode>
-    <SortForm />
-    <Cities />
+    <WeatherContent />
   </StrictMode>,
   document.getElementById('root')
 );
