@@ -1,3 +1,4 @@
+import BigCard from '../big-card/big-card';
 import SmallCard from '../small-card/small-card';
 import './cards.scss';
 
@@ -25,6 +26,9 @@ const Cards = () => {
         <SmallCard />
         <SmallCard />
         <SmallCard />
+      </div>
+      <div className="cards__big-cards">
+        <BigCard />
       </div>
     </section>
   );
