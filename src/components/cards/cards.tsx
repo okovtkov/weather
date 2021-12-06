@@ -1,6 +1,7 @@
 import BigCard from '../big-card/big-card';
 import SmallCard from '../small-card/small-card';
 import './cards.scss';
+import '../weather-content/weather-content.scss';
 
 const Cards = () => {
   return (
@@ -28,6 +29,9 @@ const Cards = () => {
         <SmallCard />
       </div>
       <div className="cards__big-cards">
+        <div className="cards__help">
+          Перетащите сюда города, погода в которых вам интересна
+        </div>
         <BigCard />
       </div>
     </section>

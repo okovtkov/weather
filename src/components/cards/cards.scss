@@ -24,3 +24,45 @@
 .cards__big-cards > div {
   margin-bottom: 2px;
 }
+
+.cards__big-cards {
+  width: calc(50% - 2px);
+  height: 100%;
+  padding-bottom: 100px;
+  overflow-y: auto;
+
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.cards__big-cards::-webkit-scrollbar {
+  display: none;
+}
+
+.cards__big-cards > div {
+  margin-bottom: 2px;
+}
+
+.cards__big-cards > div:last-child {
+  margin-bottom: 80px;
+}
+
+.cards__big-cards {
+  position: relative;
+  z-index: 1;
+}
+
+.cards__help {
+  position: absolute;
+  top: 56px;
+  left: 0;
+  z-index: -1;
+
+  width: 100%;
+  padding-right: 65px;
+  padding-left: 65px;
+
+  line-height: 32px;
+  text-align: center;
+  color: var(--color-text-help);
+}
