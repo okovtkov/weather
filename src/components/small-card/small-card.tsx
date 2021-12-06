@@ -6,7 +6,7 @@ const SmallCard = () => {
     <div className="small-card">
       <span className="small-card__city">Чебоксары</span>
       <span className="small-card__temperature">+17°</span>
-      <Icon className="strips-small" />
+      <Icon name="strips-small" />
     </div>
   );
 };

@@ -35,7 +35,7 @@ const InputWrapper = (props: Props) => {
         placeholder={props.placeholder}
       />
       <label htmlFor={props.id} aria-label={props.label}>
-        {props.iconName && <Icon className={props.iconName} />}
+        {props.iconName && <Icon name={props.iconName} />}
       </label>
     </div>
   );

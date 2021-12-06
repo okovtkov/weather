@@ -1,7 +1,5 @@
-@import './components/icon/icon.scss';
-
 :root {
-  --font-family: "OpenSansCondensed", "Arial", sans-serif;
+  --font-family: "Open Sans Condensed", "Arial", sans-serif;
 
   --color-white: #ffffff;
   --color-blue-main: #2a4bde;
@@ -44,7 +42,7 @@
 
 body {
   margin: 0;
-  font-family: 'Open Sans Condensed', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+  font-family: var(--font-family), -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   font-size: 20px;
@@ -69,7 +67,8 @@ body {
   display: flex;
   flex-grow: 1;
   width: auto;
-  height: 880px;
+  height: 100vh;
+  min-height: 880px;
   overflow: hidden;
 }
 

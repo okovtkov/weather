@@ -1,17 +1,12 @@
 import classNames from 'classnames';
+import './icon.scss';
 
 interface Props {
-  className: string;
+  name: string;
 }
 
 const Icon = (props: Props) => {
-  return (
-    <span
-      className={classNames('icon', {
-        [`icon--${props.className}`]: props.className,
-      })}
-    />
-  );
+  return <span className={classNames('icon', `icon--${props.name}`)} />;
 };
 
 export default Icon;

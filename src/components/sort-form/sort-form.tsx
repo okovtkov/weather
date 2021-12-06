@@ -10,11 +10,7 @@ interface Props {
 
 const SortForm = (props: Props) => {
   return (
-    <section
-      className={classNames('sort-form', {
-        [`${props.className}`]: props.className,
-      })}
-    >
+    <section className={classNames('sort-form', props.className)}>
       <h2 className="visually-hidden">Форма сортировки</h2>
       <form action="#" method="GET">
         <SortByName />
