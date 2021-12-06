@@ -5,7 +5,7 @@ import './weather-content.scss';
 const WeatherContent = () => {
   return (
     <div className="weather-content">
-      <SortForm />
+      <SortForm className="weather-content__sort" />
       <Cards />
     </div>
   );

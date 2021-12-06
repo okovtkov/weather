@@ -4,9 +4,17 @@ import Search from './search';
 import './sort-form.scss';
 import SortByWeatherCondition from './sort-by-weather-condition';
 
-const SortForm = () => {
+interface Props {
+  className: string;
+}
+
+const SortForm = (props: Props) => {
   return (
-    <section className={classNames('sort-form', 'weather-content__sort')}>
+    <section
+      className={classNames('sort-form', {
+        [`${props.className}`]: props.className,
+      })}
+    >
       <h2 className="visually-hidden">Форма сортировки</h2>
       <form action="#" method="GET">
         <SortByName />
