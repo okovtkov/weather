@@ -1,5 +1,6 @@
 import classNames from 'classnames';
 import { ChangeEvent } from 'react';
+import Icon from '../icon/icon';
 import './input-wrapper.scss';
 
 interface Props {
@@ -34,9 +35,7 @@ const InputWrapper = (props: Props) => {
         placeholder={props.placeholder}
       />
       <label htmlFor={props.id} aria-label={props.label}>
-        {props.iconName && (
-          <span className={classNames('icon', `icon--${props.iconName}`)} />
-        )}
+        {props.iconName && <Icon className={props.iconName} />}
       </label>
     </div>
   );
