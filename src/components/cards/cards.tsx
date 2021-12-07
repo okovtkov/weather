@@ -1,4 +1,3 @@
-import BigCard from '../big-card/big-card';
 import SmallCard from '../small-card/small-card';
 import cities, { City } from './cardsData';
 import './cards.scss';
@@ -29,7 +28,6 @@ const Cards = () => {
         <div className="cards__help">
           Перетащите сюда города, погода в которых вам интересна
         </div>
-        <BigCard />
       </div>
     </section>
   );
