@@ -2,7 +2,7 @@ import Icon from '../icon/icon';
 import './small-card.scss';
 
 interface Props {
-  city: string;
+  name: string;
   temperature: number;
 }
 
@@ -15,7 +15,7 @@ const SmallCard = (props: Props) => {
 
   return (
     <div className="small-card">
-      <span className="small-card__city">{props.city}</span>
+      <span className="small-card__city">{props.name}</span>
       <span className="small-card__temperature">{getTemerature()}°</span>
       <Icon name="strips-small" />
     </div>

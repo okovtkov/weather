@@ -1,75 +1,75 @@
 export interface City {
-  city: string;
+  name: string;
   temperature: number;
 }
 
 const cities: City[] = [
   {
-    city: 'Москва',
+    name: 'Москва',
     temperature: 0,
   },
   {
-    city: 'Санкт-Петербург',
+    name: 'Санкт-Петербург',
     temperature: -14,
   },
   {
-    city: 'Киев',
+    name: 'Киев',
     temperature: 0,
   },
   {
-    city: 'Минск',
+    name: 'Минск',
     temperature: -9,
   },
   {
-    city: 'Вильнюс',
+    name: 'Вильнюс',
     temperature: -12,
   },
   {
-    city: 'Варшава',
+    name: 'Варшава',
     temperature: -3,
   },
   {
-    city: 'Вена',
+    name: 'Вена',
     temperature: 3,
   },
   {
-    city: 'Рим',
+    name: 'Рим',
     temperature: 12,
   },
   {
-    city: 'София',
+    name: 'София',
     temperature: 1,
   },
   {
-    city: 'Париж',
+    name: 'Париж',
     temperature: 7,
   },
   {
-    city: 'Анкара',
+    name: 'Анкара',
     temperature: 14,
   },
   {
-    city: 'Мадрид',
+    name: 'Мадрид',
     temperature: 9,
   },
   {
-    city: 'Осло',
+    name: 'Осло',
     temperature: -8,
   },
   {
-    city: 'Берлин',
+    name: 'Берлин',
     temperature: 1,
   },
   {
-    city: 'Прага',
+    name: 'Прага',
     temperature: 1,
   },
   {
-    city: 'Таллин',
+    name: 'Таллин',
     temperature: -12,
   },
   {
-    city: 'Хельсинки',
+    name: 'Хельсинки',
     temperature: 17,
   },
 ];

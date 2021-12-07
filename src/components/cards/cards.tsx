@@ -5,8 +5,8 @@ import '../weather-content/weather-content.scss';
 
 const sortedCities = (): City[] => {
   return cities.sort((a: City, b: City) => {
-    if (a.city > b.city) return 1;
-    if (a.city < b.city) return -1;
+    if (a.name > b.name) return 1;
+    if (a.name < b.name) return -1;
     return 0;
   });
 };
@@ -18,9 +18,9 @@ const Cards = () => {
       <div className="cards__small-cards">
         {sortedCities().map((item: City) => (
           <SmallCard
-            city={item.city}
+            name={item.name}
             temperature={item.temperature}
-            key={item.city}
+            key={item.name}
           />
         ))}
       </div>
