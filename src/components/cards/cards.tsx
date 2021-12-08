@@ -1,5 +1,6 @@
 import SmallCard from '../small-card/small-card';
-import cities, { City } from './cardsData';
+import cities from './cardsData';
+import { City } from '../../types';
 import './cards.scss';
 import '../weather-content/weather-content.scss';
 

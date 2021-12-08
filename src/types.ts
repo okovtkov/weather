@@ -1,4 +1,6 @@
 export interface City {
   name: string;
-  temperature: number;
+  id: number;
+  lat: number;
+  lon: number;
 }
