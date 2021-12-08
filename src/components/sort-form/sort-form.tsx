@@ -3,11 +3,12 @@ import SortByName from './sort-by-name';
 import Search from './search';
 import './sort-form.scss';
 import SortByWeatherCondition from './sort-by-weather-condition';
+import { SortType } from '../../types';
 
 interface Props {
   className: string;
-  sortParameter: string;
-  setSortParameter: (param: string) => void;
+  sortType: SortType;
+  onChangeSortType: (param: SortType) => void;
 }
 
 const SortForm = (props: Props) => {
@@ -16,8 +17,8 @@ const SortForm = (props: Props) => {
       <h2 className="visually-hidden">Форма сортировки</h2>
       <form action="#" method="GET">
         <SortByName
-          sortParameter={props.sortParameter}
-          setSortParameter={props.setSortParameter}
+          sortType={props.sortType}
+          onChangeSortType={props.onChangeSortType}
         />
         <Search />
         <SortByWeatherCondition />

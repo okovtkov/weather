@@ -1,9 +1,13 @@
-import { useState } from 'react';
+import { useCallback, useState, ChangeEvent } from 'react';
 import InputWrapper from '../input-wrapper/input-wrapper';
 import './sort-form.scss';
 
 const Search = () => {
   const [text, setText] = useState('');
+
+  const changeHandler = useCallback((event: ChangeEvent<HTMLInputElement>) => {
+    setText(event.target.value);
+  }, []);
 
   return (
     <div className="sort-form__group">
@@ -15,7 +19,7 @@ const Search = () => {
         id="search"
         label="Поиск городов"
         placeholder="Название города"
-        onChange={(event) => setText(event.target.value)}
+        onChange={changeHandler}
       />
     </div>
   );

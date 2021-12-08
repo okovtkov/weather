@@ -1,19 +1,20 @@
 import { useState } from 'react';
 import Cards from '../cards/cards';
 import SortForm from '../sort-form/sort-form';
+import { SortType } from '../../types';
 import './weather-content.scss';
 
 const WeatherContent = () => {
-  const [sortParameter, setSortParameter] = useState('asc');
+  const [sortType, setSortType] = useState<SortType>('asc');
 
   return (
     <div className="weather-content">
       <SortForm
         className="weather-content__sort"
-        sortParameter={sortParameter}
-        setSortParameter={(param: string): void => setSortParameter(param)}
+        sortType={sortType}
+        onChangeSortType={setSortType}
       />
-      <Cards sortParameter={sortParameter} />
+      <Cards sortType={sortType} />
     </div>
   );
 };
