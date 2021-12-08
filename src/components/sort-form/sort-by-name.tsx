@@ -1,7 +1,19 @@
+import { useCallback } from 'react';
 import InputWrapper from '../input-wrapper/input-wrapper';
 import './sort-form.scss';
 
-const SortByName = () => {
+interface Props {
+  sortParameter: string;
+  setSortParameter: (param: string) => void;
+}
+
+const SortByName = (props: Props) => {
+  const onChange = useCallback(() => {
+    return props.sortParameter === 'asc'
+      ? props.setSortParameter('desc')
+      : props.setSortParameter('asc');
+  }, [props]);
+
   return (
     <div className="sort-form__group">
       <InputWrapper
@@ -12,6 +24,7 @@ const SortByName = () => {
         value="alphabet-sort"
         label="Сортировка по алфавиту"
         iconName="arrow-down"
+        onChange={onChange}
         checked
       />
       <InputWrapper
@@ -22,6 +35,7 @@ const SortByName = () => {
         value="alphabet-sort-reverse"
         label="Сортировка по алфавиту в обратном направлении"
         iconName="arrow-up"
+        onChange={onChange}
       />
     </div>
   );

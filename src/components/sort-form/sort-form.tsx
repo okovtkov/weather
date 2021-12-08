@@ -6,6 +6,8 @@ import SortByWeatherCondition from './sort-by-weather-condition';
 
 interface Props {
   className: string;
+  sortParameter: string;
+  setSortParameter: (param: string) => void;
 }
 
 const SortForm = (props: Props) => {
@@ -13,7 +15,10 @@ const SortForm = (props: Props) => {
     <section className={classNames('sort-form', props.className)}>
       <h2 className="visually-hidden">Форма сортировки</h2>
       <form action="#" method="GET">
-        <SortByName />
+        <SortByName
+          sortParameter={props.sortParameter}
+          setSortParameter={props.setSortParameter}
+        />
         <Search />
         <SortByWeatherCondition />
       </form>
