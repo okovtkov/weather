@@ -1,7 +1,4 @@
-export interface City {
-  name: string;
-  temperature: number;
-}
+import { City } from '../../types';
 
 const cities: City[] = [
   {

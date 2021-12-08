@@ -1,22 +1,22 @@
+import { useMemo } from 'react';
 import Icon from '../icon/icon';
 import './small-card.scss';
+import { City } from '../../types';
 
 interface Props {
-  name: string;
-  temperature: number;
+  city: City;
 }
 
 const SmallCard = (props: Props) => {
-  const getTemerature = (): string => {
-    if (props.temperature > 0) return `+${props.temperature}`;
-    if (props.temperature < 0) return `${props.temperature}`;
-    return '0';
-  };
+  const temperature = useMemo((): string => {
+    const sign = props.city.temperature > 0 ? '+' : '';
+    return `${sign}${props.city.temperature}`;
+  }, [props.city.temperature]);
 
   return (
     <div className="small-card">
-      <span className="small-card__city">{props.name}</span>
-      <span className="small-card__temperature">{getTemerature()}°</span>
+      <span className="small-card__city">{props.city.name}</span>
+      <span className="small-card__temperature">{temperature}°</span>
       <Icon name="strips-small" />
     </div>
   );

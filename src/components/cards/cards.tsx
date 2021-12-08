@@ -1,5 +1,6 @@
 import SmallCard from '../small-card/small-card';
-import cities, { City } from './cardsData';
+import cities from './cardsData';
+import { City } from '../../types';
 import './cards.scss';
 import '../weather-content/weather-content.scss';
 
@@ -16,12 +17,8 @@ const Cards = () => {
     <section className="cards">
       <h2 className="visually-hidden">Результаты сортировки</h2>
       <div className="cards__small-cards">
-        {sortedCities().map((item: City) => (
-          <SmallCard
-            name={item.name}
-            temperature={item.temperature}
-            key={item.name}
-          />
+        {sortedCities().map((city: City) => (
+          <SmallCard city={city} key={city.name} />
         ))}
       </div>
       <div className="cards__big-cards">
