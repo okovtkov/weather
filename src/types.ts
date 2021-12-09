@@ -1,4 +1,8 @@
 export interface City {
   name: string;
-  temperature: number;
+  id: string;
+  lat: number;
+  lon: number;
 }
+
+export type SortType = 'asc' | 'desc';
