@@ -1,11 +1,16 @@
 import './big-card.scss';
+import { City } from '../../types';
 
-const BigCard = () => {
+interface Props {
+  city: City;
+}
+
+const BigCard = (props: Props) => {
   return (
     <div className="big-card">
       <div className="big-card__header">
         <span className="icon icon--strips-big" />
-        <span className="big-card__city">Великий Новгород</span>
+        <span className="big-card__city">{props.city.name}</span>
       </div>
       <div className="big-card__content">
         <div className="big-card__content-wrapper">
