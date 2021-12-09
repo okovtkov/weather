@@ -1,6 +1,6 @@
 import { City } from '../../types';
 
-const cities: City[] = [
+const mockCities: City[] = [
   {
     name: 'Москва',
     id: '1',
@@ -105,4 +105,4 @@ const cities: City[] = [
   },
 ];
 
-export default cities;
+export default mockCities;

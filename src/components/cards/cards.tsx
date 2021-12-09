@@ -1,6 +1,6 @@
 import { useMemo, useState, useCallback } from 'react';
 import SmallCard from '../small-card/small-card';
-import cities from './cardsData';
+import mockCities from './cardsData';
 import { City, SortType } from '../../types';
 import './cards.scss';
 import '../weather-content/weather-content.scss';
@@ -11,56 +11,49 @@ interface Props {
 }
 
 const Cards = (props: Props) => {
-  const [favourite, setFavourite] = useState<City[]>([]);
-  const [mainCards, setMainCards] = useState<City[]>(cities);
+  const [favourites, setFavourites] = useState<City[]>([]);
 
-  const changeMainHandler = useCallback(
+  const addFavouriteHandler = useCallback(
     (city: City) => {
-      const index = mainCards.findIndex((card: City) => city.id === card.id);
-      mainCards.splice(index, 1);
-      setMainCards(mainCards);
+      setFavourites([...favourites, city]);
     },
-    [mainCards]
+    [favourites]
   );
 
-  const changeFavouritesHandler = useCallback(
-    (city: City) => {
-      setFavourite([...favourite, city]);
-    },
-    [favourite]
-  );
+  const ascCompare = useCallback((a: City, b: City) => {
+    if (a.name > b.name) return 1;
+    if (a.name < b.name) return -1;
+    return 0;
+  }, []);
 
-  const sortedCities = useMemo((): City[] => {
-    if (props.sortType === 'asc') {
-      return mainCards.sort((a: City, b: City) => {
-        if (a.name > b.name) return 1;
-        if (a.name < b.name) return -1;
-        return 0;
-      });
-    }
-    return mainCards.sort((a: City, b: City) => {
-      if (a.name > b.name) return -1;
-      if (a.name < b.name) return 1;
-      return 0;
-    });
-  }, [mainCards, props.sortType]);
+  const descCompare = useCallback((a: City, b: City) => {
+    if (a.name > b.name) return -1;
+    if (a.name < b.name) return 1;
+    return 0;
+  }, []);
+
+  const cities = useMemo((): City[] => {
+    const compare = props.sortType === 'asc' ? ascCompare : descCompare;
+    return mockCities
+      .filter((city) => !favourites.some((item) => city.id === item.id))
+      .sort(compare);
+  }, [ascCompare, descCompare, favourites, props.sortType]);
 
   return (
     <section className="cards">
       <h2 className="visually-hidden">Результаты сортировки</h2>
       <div className="cards__small-cards">
-        {sortedCities.map((city: City) => (
+        {cities.map((city: City) => (
           <SmallCard
             city={city}
-            key={city.name}
-            onChangeFavourite={changeFavouritesHandler}
-            onChangeMain={changeMainHandler}
+            key={city.id}
+            onAddFavourite={addFavouriteHandler}
           />
         ))}
       </div>
       <div className="cards__big-cards">
-        {favourite.length > 0 &&
-          favourite.map((card) => <BigCard city={card} />)}
+        {favourites.length > 0 &&
+          favourites.map((card) => <BigCard city={card} />)}
         <div className="cards__help">
           Перетащите сюда города, погода в которых вам интересна
         </div>

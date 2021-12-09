@@ -7,14 +7,12 @@ import { City } from '../../types';
 
 interface Props {
   city: City;
-  onChangeFavourite: (city: City) => void;
-  onChangeMain: (city: City) => void;
+  onAddFavourite: (city: City) => void;
 }
 
 const SmallCard = (props: Props) => {
   const clickHandler = useCallback(() => {
-    props.onChangeFavourite(props.city);
-    props.onChangeMain(props.city);
+    props.onAddFavourite(props.city);
   }, [props]);
 
   return (
