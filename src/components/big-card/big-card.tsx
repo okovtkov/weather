@@ -1,5 +1,6 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/mouse-events-have-key-events */
 import { useCallback } from 'react';
 import './big-card.scss';
 import classNames from 'classnames';
@@ -14,8 +15,11 @@ interface Props {
 
 const BigCard = (props: Props) => {
   const changeSelectedCityHandler = useCallback(() => {
-    props.onChangeCoord({ lat: props.city.lat, lng: props.city.lon });
     props.onChangeSelectedCity(props.city.id);
+  }, [props]);
+
+  const changeCoordHandler = useCallback(() => {
+    props.onChangeCoord({ lat: props.city.lat, lng: props.city.lon });
   }, [props]);
 
   return (
@@ -23,7 +27,8 @@ const BigCard = (props: Props) => {
       className={classNames('big-card', {
         'big-card__selected': props.selectedCity === props.city.id,
       })}
-      onClick={changeSelectedCityHandler}
+      onMouseOver={changeSelectedCityHandler}
+      onClick={changeCoordHandler}
     >
       <div className="big-card__header">
         <span className="icon icon--strips-big" />

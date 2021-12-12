@@ -8,6 +8,7 @@ import WeatherMap from './weather-map';
 interface Props extends MapProps {
   coord: Coord;
   selectedCity: string;
+  onChangeSelectedCity: (id: string) => void;
 }
 
 const MapLoader = (props: Props) => {
@@ -30,18 +31,21 @@ const MapLoader = (props: Props) => {
   }, []);
 
   useEffect(() => {
-    if (props.selectedCity) {
-      map?.setCenter(props.coord);
-      map?.panBy(props.coord.lat, props.coord.lng);
-    }
-  }, [map, props.coord, props.selectedCity]);
+    map?.setCenter(props.coord);
+    map?.panBy(props.coord.lat, props.coord.lng);
+  }, [map, props.coord]);
 
   return (
     <>
       <div id="map" />
       {map && (
-        /* eslint-disable-next-line react/jsx-props-no-spreading */
-        <WeatherMap {...props} map={map} selectedCity={props.selectedCity} />
+        <WeatherMap
+          /* eslint-disable-next-line react/jsx-props-no-spreading */
+          {...props}
+          map={map}
+          selectedCity={props.selectedCity}
+          onChangeSelectedCity={props.onChangeSelectedCity}
+        />
       )}
     </>
   );

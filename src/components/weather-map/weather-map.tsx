@@ -5,6 +5,7 @@ import './weather-map.scss';
 interface Props extends MapProps {
   map: google.maps.Map;
   selectedCity: string;
+  onChangeSelectedCity: (id: string) => void;
 }
 
 const WeatherMap = (props: Props) => {
@@ -16,8 +17,12 @@ const WeatherMap = (props: Props) => {
         position: { lat: city.lat, lng: city.lon },
         map: props.map,
       });
+      // eslint-disable-next-line prettier/prettier
+      marker.addListener('mouseover', () => props.onChangeSelectedCity(city.id));
+      marker.addListener('mouseout', () => props.onChangeSelectedCity(''));
       if (city.id === props.selectedCity) {
-        const icon = 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png';
+        const icon =
+          'https://raw.githubusercontent.com/Concept211/Google-Maps-Markers/master/source/marker_blue.png';
         marker.setIcon(icon);
       }
       return marker;
@@ -26,7 +31,7 @@ const WeatherMap = (props: Props) => {
       current.forEach((marker) => marker.setMap(null));
       return newMarkers;
     });
-  }, [props.cities, props.map, props.selectedCity]);
+  }, [props, props.cities, props.map, props.selectedCity]);
 
   return null;
 };
