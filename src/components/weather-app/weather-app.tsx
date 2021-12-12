@@ -5,14 +5,19 @@ import WeatherMap from '../weather-map';
 
 const WeatherApp = () => {
   const [favourites, setFavourites] = useState<City[]>([]);
+  const [coord, setCoord] = useState({
+    lat: 59.97665957310762,
+    lng: 30.42978408718145,
+  });
 
   return (
     <div className="weather-app">
       <WeatherContent
         favourites={favourites}
         onChangeFavourites={setFavourites}
+        onChangeCoord={setCoord}
       />
-      <WeatherMap cities={favourites} />
+      <WeatherMap cities={favourites} coord={coord} />
     </div>
   );
 };

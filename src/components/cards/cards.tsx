@@ -1,7 +1,7 @@
 import { useMemo, useCallback } from 'react';
 import SmallCard from '../small-card/small-card';
 import mockCities from './cardsData';
-import { City, SortType } from '../../types';
+import { City, SortType, Coord } from '../../types';
 import './cards.scss';
 import '../weather-content/weather-content.scss';
 import BigCard from '../big-card/big-card';
@@ -10,22 +10,13 @@ interface Props {
   sortType: SortType;
   favourites: City[];
   onChangeFavourites: (cities: City[]) => void;
+  onChangeCoord: (coord: Coord) => void;
 }
 
 const Cards = (props: Props) => {
   const addFavouriteHandler = useCallback(
     (city: City) => {
       props.onChangeFavourites([...props.favourites, city]);
-    },
-    [props]
-  );
-
-  const deleteFavouriteHandler = useCallback(
-    (city: City) => {
-      const cities = [...props.favourites];
-      const index = props.favourites.findIndex((card) => card.id === city.id);
-      cities.splice(index, 1);
-      props.onChangeFavourites(cities);
     },
     [props]
   );
@@ -67,7 +58,7 @@ const Cards = (props: Props) => {
             <BigCard
               city={card}
               key={card.id}
-              onDeleteFavourite={deleteFavouriteHandler}
+              onChangeCoord={props.onChangeCoord}
             />
           ))}
         <div className="cards__help">

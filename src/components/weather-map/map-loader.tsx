@@ -2,9 +2,14 @@ import { useEffect, useState } from 'react';
 import { Loader } from '@googlemaps/js-api-loader';
 import './weather-map.scss';
 import { MapProps } from './types';
+import { Coord } from '../../types';
 import WeatherMap from './weather-map';
 
-const MapLoader = (props: MapProps) => {
+interface Props extends MapProps {
+  coord: Coord;
+}
+
+const MapLoader = (props: Props) => {
   const [map, setMap] = useState<google.maps.Map | null>(null);
 
   useEffect(() => {
@@ -16,12 +21,12 @@ const MapLoader = (props: MapProps) => {
     loader.load().then(() => {
       setMap(
         new google.maps.Map(document.getElementById('map') as HTMLElement, {
-          center: { lat: 59.97665957310762, lng: 30.42978408718145 },
+          center: props.coord,
           zoom: 8,
         })
       );
     });
-  }, []);
+  }, [props.coord]);
 
   return (
     <>
