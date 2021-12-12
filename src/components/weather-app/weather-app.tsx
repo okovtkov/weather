@@ -9,6 +9,7 @@ const WeatherApp = () => {
     lat: 59.97665957310762,
     lng: 30.42978408718145,
   });
+  const [selectedCity, setSelectedCity] = useState('');
 
   return (
     <div className="weather-app">
@@ -16,8 +17,13 @@ const WeatherApp = () => {
         favourites={favourites}
         onChangeFavourites={setFavourites}
         onChangeCoord={setCoord}
+        onChangeSelectedCity={setSelectedCity}
       />
-      <WeatherMap cities={favourites} coord={coord} />
+      <WeatherMap
+        cities={favourites}
+        coord={coord}
+        selectedCity={selectedCity}
+      />
     </div>
   );
 };

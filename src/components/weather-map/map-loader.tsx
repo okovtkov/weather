@@ -7,6 +7,7 @@ import WeatherMap from './weather-map';
 
 interface Props extends MapProps {
   coord: Coord;
+  selectedCity: string;
 }
 
 const MapLoader = (props: Props) => {
@@ -31,8 +32,10 @@ const MapLoader = (props: Props) => {
   return (
     <>
       <div id="map" />
-      {/* eslint-disable-next-line react/jsx-props-no-spreading */}
-      {map && <WeatherMap {...props} map={map} />}
+      {map && (
+        /* eslint-disable-next-line react/jsx-props-no-spreading */
+        <WeatherMap {...props} map={map} selectedCity={props.selectedCity} />
+      )}
     </>
   );
 };

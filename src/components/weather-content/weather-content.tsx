@@ -8,6 +8,7 @@ interface Props {
   favourites: City[];
   onChangeFavourites: (cities: City[]) => void;
   onChangeCoord: (coord: Coord) => void;
+  onChangeSelectedCity: (id: string) => void;
 }
 
 const WeatherContent = (props: Props) => {
@@ -24,6 +25,7 @@ const WeatherContent = (props: Props) => {
         favourites={props.favourites}
         onChangeFavourites={props.onChangeFavourites}
         onChangeCoord={props.onChangeCoord}
+        onChangeSelectedCity={props.onChangeSelectedCity}
         sortType={sortType}
       />
     </div>

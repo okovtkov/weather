@@ -11,6 +11,7 @@ interface Props {
   favourites: City[];
   onChangeFavourites: (cities: City[]) => void;
   onChangeCoord: (coord: Coord) => void;
+  onChangeSelectedCity: (id: string) => void;
 }
 
 const Cards = (props: Props) => {
@@ -59,6 +60,7 @@ const Cards = (props: Props) => {
               city={card}
               key={card.id}
               onChangeCoord={props.onChangeCoord}
+              onChangeSelectedCity={props.onChangeSelectedCity}
             />
           ))}
         <div className="cards__help">

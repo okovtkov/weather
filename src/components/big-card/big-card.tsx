@@ -7,15 +7,17 @@ import { City, Coord } from '../../types';
 interface Props {
   city: City;
   onChangeCoord: (coord: Coord) => void;
+  onChangeSelectedCity: (id: string) => void;
 }
 
 const BigCard = (props: Props) => {
-  const changeCoordHandler = useCallback(() => {
+  const changeSelectedCityHandler = useCallback(() => {
     props.onChangeCoord({ lat: props.city.lat, lng: props.city.lon });
+    props.onChangeSelectedCity(props.city.id);
   }, [props]);
 
   return (
-    <div className="big-card" onClick={changeCoordHandler}>
+    <div className="big-card" onClick={changeSelectedCityHandler}>
       <div className="big-card__header">
         <span className="icon icon--strips-big" />
         <span className="big-card__city">{props.city.name}</span>
