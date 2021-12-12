@@ -7,6 +7,7 @@ import '../weather-content/weather-content.scss';
 import BigCard from '../big-card/big-card';
 
 interface Props {
+  selectedCity: string;
   sortType: SortType;
   favourites: City[];
   onChangeFavourites: (cities: City[]) => void;
@@ -61,6 +62,7 @@ const Cards = (props: Props) => {
               key={card.id}
               onChangeCoord={props.onChangeCoord}
               onChangeSelectedCity={props.onChangeSelectedCity}
+              selectedCity={props.selectedCity}
             />
           ))}
         <div className="cards__help">

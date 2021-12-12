@@ -22,12 +22,19 @@ const MapLoader = (props: Props) => {
     loader.load().then(() => {
       setMap(
         new google.maps.Map(document.getElementById('map') as HTMLElement, {
-          center: props.coord,
+          center: { lat: 59.97665957310762, lng: 30.42978408718145 },
           zoom: 8,
         })
       );
     });
-  }, [props.coord]);
+  }, []);
+
+  useEffect(() => {
+    if (props.selectedCity) {
+      map?.setCenter(props.coord);
+      map?.panBy(props.coord.lat, props.coord.lng);
+    }
+  }, [map, props.coord, props.selectedCity]);
 
   return (
     <>

@@ -65,7 +65,7 @@
   margin-top: 12px;
 }
 
-.big-card__wind-info {
+.big-card__info {
   margin-left: 10px;
 
   color: var(--color-text-light-blue);
@@ -87,25 +87,39 @@
   transition: color var(--transition-base);
 }
 
-.big-card:hover .big-card__city {
+.big-card:hover .big-card__city,
+.big-card__selected,
+.big-card__selected .big-card__info {
   color: var(--color-text-white);
 }
 
 .big-card:hover .big-card__temperature,
-.big-card:hover .big-card__wind-info {
+.big-card:hover .big-card__info,
+.big-card__selected {
   color: var(--color-text-white);
 }
 
-.big-card:hover .big-card__header {
+.big-card:hover .big-card__header,
+.big-card__selected {
   background-color: var(--color-blue-light);
 }
 
-.big-card:hover .big-card__content {
+.big-card:hover .big-card__content,
+.big-card__selected {
   background-color: var(--color-blue-main);
 }
 
-.big-card:active {
+.big-card:active,
+.big-card__selected {
   filter: drop-shadow(0 8px 20px rgba(11, 23, 78, 0.5));
+}
+
+.big-card__selected .big-card__header {
+  background-color: var(--color-blue-light);
+}
+
+.big-card__selected .big-card__content {
+  background-color: var(--color-blue-main);
 }
 
 .big-card--shadow {
@@ -124,7 +138,7 @@
 
 .big-card--shadow .big-card__city,
 .big-card--shadow .big-card__temperature,
-.big-card--shadow .big-card__wind-info {
+.big-card--shadow .big-card__info {
   color: var(--color-text-white);
 }
 
