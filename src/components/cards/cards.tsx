@@ -1,4 +1,4 @@
-import { useMemo, useState, useCallback } from 'react';
+import { useMemo, useCallback } from 'react';
 import SmallCard from '../small-card/small-card';
 import mockCities from './cardsData';
 import { City, SortType } from '../../types';
@@ -8,16 +8,26 @@ import BigCard from '../big-card/big-card';
 
 interface Props {
   sortType: SortType;
+  favourites: City[];
+  onChangeFavourites: (cities: City[]) => void;
 }
 
 const Cards = (props: Props) => {
-  const [favourites, setFavourites] = useState<City[]>([]);
-
   const addFavouriteHandler = useCallback(
     (city: City) => {
-      setFavourites([...favourites, city]);
+      props.onChangeFavourites([...props.favourites, city]);
     },
-    [favourites]
+    [props]
+  );
+
+  const deleteFavouriteHandler = useCallback(
+    (city: City) => {
+      const cities = [...props.favourites];
+      const index = props.favourites.findIndex((card) => card.id === city.id);
+      cities.splice(index, 1);
+      props.onChangeFavourites(cities);
+    },
+    [props]
   );
 
   const ascCompare = useCallback((a: City, b: City) => {
@@ -35,9 +45,9 @@ const Cards = (props: Props) => {
   const cities = useMemo((): City[] => {
     const compare = props.sortType === 'asc' ? ascCompare : descCompare;
     return mockCities
-      .filter((city) => !favourites.some((item) => city.id === item.id))
+      .filter((city) => !props.favourites.find((item) => city.id === item.id))
       .sort(compare);
-  }, [ascCompare, descCompare, favourites, props.sortType]);
+  }, [ascCompare, descCompare, props.favourites, props.sortType]);
 
   return (
     <section className="cards">
@@ -52,8 +62,14 @@ const Cards = (props: Props) => {
         ))}
       </div>
       <div className="cards__big-cards">
-        {favourites.length > 0 &&
-          favourites.map((card) => <BigCard city={card} />)}
+        {props.favourites.length > 0 &&
+          props.favourites.map((card) => (
+            <BigCard
+              city={card}
+              key={card.id}
+              onDeleteFavourite={deleteFavouriteHandler}
+            />
+          ))}
         <div className="cards__help">
           Перетащите сюда города, погода в которых вам интересна
         </div>
