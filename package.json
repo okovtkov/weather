@@ -4,7 +4,7 @@
   "homepage": "https://vasilich99.github.io/weather",
   "scripts": {
     "predeploy": "react-scripts build",
-    "deploy": "gh-pages -b docs -d build -u \"github-actions-bot <support+actions@github.com>\"",
+    "deploy": "gh-pages -b build -d build -u \"github-actions-bot <support+actions@github.com>\"",
     "start": "react-scripts start",
     "lint": "eslint --ext .ts,.tsx src/",
     "postinstall": "husky install",
