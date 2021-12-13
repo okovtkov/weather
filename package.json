@@ -1,7 +1,10 @@
 {
   "name": "weather",
   "private": true,
+  "homepage": "https://vasilich99.github.io/weather",
   "scripts": {
+    "predeploy": "react-scripts build",
+    "deploy": "gh-pages -b docs -d build -u \"github-actions-bot <support+actions@github.com>\"",
     "start": "react-scripts start",
     "lint": "eslint --ext .ts,.tsx src/",
     "postinstall": "husky install",
@@ -29,6 +32,7 @@
     "eslint-plugin-react": "^7.27.1",
     "eslint-plugin-react-hooks": "^4.3.0",
     "eslint-plugin-react-perf": "^3.3.0",
+    "gh-pages": "^3.2.3",
     "husky": "^7.0.4",
     "prettier": "^2.5.0",
     "react-scripts": "4.0.3",
