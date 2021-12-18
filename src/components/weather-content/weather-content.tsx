@@ -6,10 +6,11 @@ import './weather-content.scss';
 
 interface Props {
   favourites: City[];
-  selectedCity: string;
+  selectedCity: City | null;
   onChangeFavourites: (cities: City[]) => void;
   onChangeCoord: (coord: Coord) => void;
-  onChangeSelectedCity: (id: string) => void;
+  onChangeSelectedCity: (city: City | null) => void;
+  onChangeWantedCity: (city: City | null) => void;
 }
 
 const WeatherContent = (props: Props) => {
@@ -27,6 +28,7 @@ const WeatherContent = (props: Props) => {
         onChangeFavourites={props.onChangeFavourites}
         onChangeCoord={props.onChangeCoord}
         onChangeSelectedCity={props.onChangeSelectedCity}
+        onChangeWantedCity={props.onChangeWantedCity}
         sortType={sortType}
         selectedCity={props.selectedCity}
       />

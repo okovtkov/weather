@@ -9,7 +9,8 @@ const WeatherApp = () => {
     lat: 59.97665957310762,
     lng: 30.42978408718145,
   });
-  const [selectedCity, setSelectedCity] = useState('');
+  const [selectedCity, setSelectedCity] = useState<City | null>(null);
+  const [wantedCity, setWantedCity] = useState<City | null>(null);
 
   return (
     <div className="weather-app">
@@ -19,12 +20,15 @@ const WeatherApp = () => {
         onChangeFavourites={setFavourites}
         onChangeCoord={setCoord}
         onChangeSelectedCity={setSelectedCity}
+        onChangeWantedCity={setWantedCity}
       />
       <WeatherMap
         cities={favourites}
         coord={coord}
         selectedCity={selectedCity}
+        wantedCity={wantedCity}
         onChangeSelectedCity={setSelectedCity}
+        onChangeWantedCity={setWantedCity}
       />
     </div>
   );

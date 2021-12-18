@@ -8,31 +8,39 @@ import { City, Coord } from '../../types';
 
 interface Props {
   city: City;
-  selectedCity: string;
+  selectedCity: City | null;
   onChangeCoord: (coord: Coord) => void;
-  onChangeSelectedCity: (id: string) => void;
+  onChangeSelectedCity: (city: City | null) => void;
+  onChangeWantedCity: (city: City | null) => void;
 }
 
 const BigCard = (props: Props) => {
-  const changeSelectedCityHandler = useCallback(() => {
-    props.onChangeSelectedCity(props.city.id);
+  const returnOldWantedCityHandler = useCallback(() => {
+    props.onChangeWantedCity(props.selectedCity);
   }, [props]);
 
-  const changeCoordHandler = useCallback(() => {
-    props.onChangeCoord({ lat: props.city.lat, lng: props.city.lon });
+  const changeWantedCityHandler = useCallback((event) => {
+    // event.stopPropagation();
+    props.onChangeWantedCity(props.city);
+  }, [props]);
+
+  const changeSelectedCityHandler = useCallback(() => {
+    props.onChangeSelectedCity(props.city);
+    props.onChangeCoord({ lat: props.city?.lat, lng: props.city?.lon });
   }, [props]);
 
   return (
     <div
       className={classNames('big-card', {
-        'big-card__selected': props.selectedCity === props.city.id,
+        'big-card_selected': props.selectedCity === props.city,
       })}
-      onMouseOver={changeSelectedCityHandler}
-      onClick={changeCoordHandler}
+      onMouseEnter={changeWantedCityHandler}
+      onMouseLeave={returnOldWantedCityHandler}
+      onClick={changeSelectedCityHandler}
     >
       <div className="big-card__header">
         <span className="icon icon--strips-big" />
-        <span className="big-card__city">{props.city.name}</span>
+        <span className="big-card__city">{props.city?.name}</span>
       </div>
       <div className="big-card__content">
         <div className="big-card__content-wrapper">

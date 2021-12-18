@@ -2,13 +2,13 @@ import { useEffect, useState } from 'react';
 import { Loader } from '@googlemaps/js-api-loader';
 import './weather-map.scss';
 import { MapProps } from './types';
-import { Coord } from '../../types';
+import { Coord, City } from '../../types';
 import WeatherMap from './weather-map';
 
 interface Props extends MapProps {
   coord: Coord;
-  selectedCity: string;
-  onChangeSelectedCity: (id: string) => void;
+  wantedCity: City | null;
+  onChangeWantedCity: (city: City | null) => void;
 }
 
 const MapLoader = (props: Props) => {
@@ -16,7 +16,7 @@ const MapLoader = (props: Props) => {
 
   useEffect(() => {
     const loader = new Loader({
-      apiKey: 'AIzaSyClBiMqRBD5c8F24E3pHI4BK6RDxgF-hpQ',
+      apiKey: `${process.env.REACT_APP_MAP_KEY}`,
       version: 'weekly',
     });
 
@@ -30,11 +30,6 @@ const MapLoader = (props: Props) => {
     });
   }, []);
 
-  useEffect(() => {
-    map?.setCenter(props.coord);
-    map?.panBy(props.coord.lat, props.coord.lng);
-  }, [map, props.coord]);
-
   return (
     <>
       <div id="map" />
@@ -43,8 +38,6 @@ const MapLoader = (props: Props) => {
           /* eslint-disable-next-line react/jsx-props-no-spreading */
           {...props}
           map={map}
-          selectedCity={props.selectedCity}
-          onChangeSelectedCity={props.onChangeSelectedCity}
         />
       )}
     </>

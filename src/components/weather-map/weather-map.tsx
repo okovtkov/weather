@@ -1,11 +1,14 @@
 import { useEffect, useState } from 'react';
 import { MapProps } from './types';
+import { Coord, City } from '../../types';
+import icon from '../icon/icons/marker_blue.png';
 import './weather-map.scss';
 
 interface Props extends MapProps {
+  coord: Coord;
+  wantedCity: City | null;
   map: google.maps.Map;
-  selectedCity: string;
-  onChangeSelectedCity: (id: string) => void;
+  onChangeWantedCity: (city: City | null) => void;
 }
 
 const WeatherMap = (props: Props) => {
@@ -18,11 +21,9 @@ const WeatherMap = (props: Props) => {
         map: props.map,
       });
       // eslint-disable-next-line prettier/prettier
-      marker.addListener('mouseover', () => props.onChangeSelectedCity(city.id));
-      marker.addListener('mouseout', () => props.onChangeSelectedCity(''));
-      if (city.id === props.selectedCity) {
-        const icon =
-          'https://raw.githubusercontent.com/Concept211/Google-Maps-Markers/master/source/marker_blue.png';
+      marker.addListener('mouseover', () => props.onChangeWantedCity(city));
+      marker.addListener('mouseout', () => props.onChangeWantedCity(props.selectedCity));
+      if (city === props.wantedCity) {
         marker.setIcon(icon);
       }
       return marker;
@@ -32,6 +33,11 @@ const WeatherMap = (props: Props) => {
       return newMarkers;
     });
   }, [props, props.cities, props.map, props.selectedCity]);
+
+  useEffect(() => {
+    props.map?.setCenter(props.coord);
+    props.map?.panBy(props.coord.lat, props.coord.lng);
+  }, [props.map, props.coord]);
 
   return null;
 };
