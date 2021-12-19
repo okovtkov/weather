@@ -1,7 +1,7 @@
 import { useMemo, useCallback } from 'react';
 import SmallCard from '../small-card/small-card';
 import mockCities from './cardsData';
-import { City, SortType, Coord } from '../../types';
+import { City, SortType } from '../../types';
 import './cards.scss';
 import '../weather-content/weather-content.scss';
 import BigCard from '../big-card/big-card';
@@ -11,9 +11,8 @@ interface Props {
   sortType: SortType;
   favourites: City[];
   onChangeFavourites: (cities: City[]) => void;
-  onChangeCoord: (coord: Coord) => void;
   onChangeSelectedCity: (city: City | null) => void;
-  onChangeWantedCity: (city: City | null) => void;
+  onWantSelectCity: (city: City | null) => void;
 }
 
 const Cards = (props: Props) => {
@@ -61,9 +60,8 @@ const Cards = (props: Props) => {
             <BigCard
               city={card}
               key={card.id}
-              onChangeCoord={props.onChangeCoord}
               onChangeSelectedCity={props.onChangeSelectedCity}
-              onChangeWantedCity={props.onChangeWantedCity}
+              onWantSelectCity={props.onWantSelectCity}
               selectedCity={props.selectedCity}
             />
           ))}

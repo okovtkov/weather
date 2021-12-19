@@ -4,29 +4,26 @@
 import { useCallback } from 'react';
 import './big-card.scss';
 import classNames from 'classnames';
-import { City, Coord } from '../../types';
+import { City } from '../../types';
 
 interface Props {
   city: City;
   selectedCity: City | null;
-  onChangeCoord: (coord: Coord) => void;
   onChangeSelectedCity: (city: City | null) => void;
-  onChangeWantedCity: (city: City | null) => void;
+  onWantSelectCity: (city: City | null) => void;
 }
 
 const BigCard = (props: Props) => {
   const returnOldWantedCityHandler = useCallback(() => {
-    props.onChangeWantedCity(props.selectedCity);
+    props.onWantSelectCity(props.selectedCity);
   }, [props]);
 
-  const changeWantedCityHandler = useCallback((event) => {
-    // event.stopPropagation();
-    props.onChangeWantedCity(props.city);
+  const changeWantedCityHandler = useCallback(() => {
+    props.onWantSelectCity(props.city);
   }, [props]);
 
   const changeSelectedCityHandler = useCallback(() => {
     props.onChangeSelectedCity(props.city);
-    props.onChangeCoord({ lat: props.city?.lat, lng: props.city?.lon });
   }, [props]);
 
   return (

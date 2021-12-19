@@ -1,16 +1,15 @@
 import { useState } from 'react';
 import Cards from '../cards/cards';
 import SortForm from '../sort-form/sort-form';
-import { SortType, City, Coord } from '../../types';
+import { SortType, City } from '../../types';
 import './weather-content.scss';
 
 interface Props {
   favourites: City[];
   selectedCity: City | null;
   onChangeFavourites: (cities: City[]) => void;
-  onChangeCoord: (coord: Coord) => void;
   onChangeSelectedCity: (city: City | null) => void;
-  onChangeWantedCity: (city: City | null) => void;
+  onWantSelectCity: (city: City | null) => void;
 }
 
 const WeatherContent = (props: Props) => {
@@ -26,9 +25,8 @@ const WeatherContent = (props: Props) => {
       <Cards
         favourites={props.favourites}
         onChangeFavourites={props.onChangeFavourites}
-        onChangeCoord={props.onChangeCoord}
         onChangeSelectedCity={props.onChangeSelectedCity}
-        onChangeWantedCity={props.onChangeWantedCity}
+        onWantSelectCity={props.onWantSelectCity}
         sortType={sortType}
         selectedCity={props.selectedCity}
       />

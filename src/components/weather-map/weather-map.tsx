@@ -1,14 +1,13 @@
 import { useEffect, useState } from 'react';
 import { MapProps } from './types';
-import { Coord, City } from '../../types';
+import { City } from '../../types';
 import icon from '../icon/icons/marker_blue.png';
 import './weather-map.scss';
 
 interface Props extends MapProps {
-  coord: Coord;
-  wantedCity: City | null;
+  desiredCity: City | null;
   map: google.maps.Map;
-  onChangeWantedCity: (city: City | null) => void;
+  onWantSelectCity: (city: City | null) => void;
 }
 
 const WeatherMap = (props: Props) => {
@@ -20,10 +19,11 @@ const WeatherMap = (props: Props) => {
         position: { lat: city.lat, lng: city.lon },
         map: props.map,
       });
-      // eslint-disable-next-line prettier/prettier
-      marker.addListener('mouseover', () => props.onChangeWantedCity(city));
-      marker.addListener('mouseout', () => props.onChangeWantedCity(props.selectedCity));
-      if (city === props.wantedCity) {
+      marker.addListener('mouseover', () => props.onWantSelectCity(city));
+      marker.addListener('mouseout', () =>
+        props.onWantSelectCity(props.selectedCity)
+      );
+      if (city.id === props.desiredCity?.id) {
         marker.setIcon(icon);
       }
       return marker;
@@ -35,9 +35,11 @@ const WeatherMap = (props: Props) => {
   }, [props, props.cities, props.map, props.selectedCity]);
 
   useEffect(() => {
-    props.map?.setCenter(props.coord);
-    props.map?.panBy(props.coord.lat, props.coord.lng);
-  }, [props.map, props.coord]);
+    const lat = props.selectedCity?.lat || 0;
+    const lng = props.selectedCity?.lon || 0;
+    props.map?.setCenter({ lat, lng });
+    props.map.panBy(lat, lng);
+  }, [props.map, props.selectedCity]);
 
   return null;
 };
