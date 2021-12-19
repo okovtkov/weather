@@ -37,7 +37,7 @@ const BigCard = (props: Props) => {
     >
       <div className="big-card__header">
         <span className="icon icon--strips-big" />
-        <span className="big-card__city">{props.city?.name}</span>
+        <span className="big-card__city">{props.city.name}</span>
       </div>
       <div className="big-card__content">
         <div className="big-card__content-wrapper">

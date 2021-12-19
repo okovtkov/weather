@@ -1,13 +1,10 @@
 import { useEffect, useState } from 'react';
 import { MapProps } from './types';
-import { City } from '../../types';
 import icon from '../icon/icons/marker_blue.png';
 import './weather-map.scss';
 
 interface Props extends MapProps {
-  desiredCity: City | null;
   map: google.maps.Map;
-  onWantSelectCity: (city: City | null) => void;
 }
 
 const WeatherMap = (props: Props) => {
@@ -32,11 +29,11 @@ const WeatherMap = (props: Props) => {
       current.forEach((marker) => marker.setMap(null));
       return newMarkers;
     });
-  }, [props, props.cities, props.map, props.selectedCity]);
+  }, [props]);
 
   useEffect(() => {
-    const lat = props.selectedCity?.lat || 0;
-    const lng = props.selectedCity?.lon || 0;
+    const lat = props.selectedCity?.lat || 59.97665957310762;
+    const lng = props.selectedCity?.lon || 30.42978408718145;
     props.map?.setCenter({ lat, lng });
     props.map.panBy(lat, lng);
   }, [props.map, props.selectedCity]);

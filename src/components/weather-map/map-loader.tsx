@@ -2,15 +2,9 @@ import { useEffect, useState } from 'react';
 import { Loader } from '@googlemaps/js-api-loader';
 import './weather-map.scss';
 import { MapProps } from './types';
-import { City } from '../../types';
 import WeatherMap from './weather-map';
 
-interface Props extends MapProps {
-  desiredCity: City | null;
-  onWantSelectCity: (city: City | null) => void;
-}
-
-const MapLoader = (props: Props) => {
+const MapLoader = (props: MapProps) => {
   const [map, setMap] = useState<google.maps.Map | null>(null);
 
   useEffect(() => {
