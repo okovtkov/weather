@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { MapProps } from './types';
 import icon from '../icon/icons/marker_blue.png';
+import iconHover from '../icon/icons/_blue.png';
 import './weather-map.scss';
 
 interface Props extends MapProps {
@@ -21,6 +22,9 @@ const WeatherMap = (props: Props) => {
         props.onWantSelectCity(props.selectedCity)
       );
       if (city.id === props.desiredCity?.id) {
+        marker.setIcon(iconHover);
+      }
+      if (city.id === props.selectedCity?.id) {
         marker.setIcon(icon);
       }
       return marker;
