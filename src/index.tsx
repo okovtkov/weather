@@ -1,15 +1,11 @@
 import { StrictMode } from 'react';
 import ReactDOM from 'react-dom';
 import './index.scss';
-import WeatherContent from './components/weather-content/weather-content';
-import WeatherMap from './components/weather-map/weather-map';
+import WeatherApp from './components/weather-app/weather-app';
 
 ReactDOM.render(
   <StrictMode>
-    <div className="weather-app">
-      <WeatherContent />
-      <WeatherMap />
-    </div>
+    <WeatherApp />
   </StrictMode>,
   document.getElementById('root')
 );

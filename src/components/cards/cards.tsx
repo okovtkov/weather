@@ -1,4 +1,4 @@
-import { useMemo, useState, useCallback } from 'react';
+import { useMemo, useCallback } from 'react';
 import SmallCard from '../small-card/small-card';
 import mockCities from './cardsData';
 import { City, SortType } from '../../types';
@@ -7,17 +7,20 @@ import '../weather-content/weather-content.scss';
 import BigCard from '../big-card/big-card';
 
 interface Props {
+  selectedCity: City | null;
   sortType: SortType;
+  favourites: City[];
+  onChangeFavourites: (cities: City[]) => void;
+  onChangeSelectedCity: (city: City | null) => void;
+  onWantSelectCity: (city: City | null) => void;
 }
 
 const Cards = (props: Props) => {
-  const [favourites, setFavourites] = useState<City[]>([]);
-
   const addFavouriteHandler = useCallback(
     (city: City) => {
-      setFavourites([...favourites, city]);
+      props.onChangeFavourites([...props.favourites, city]);
     },
-    [favourites]
+    [props]
   );
 
   const ascCompare = useCallback((a: City, b: City) => {
@@ -35,9 +38,9 @@ const Cards = (props: Props) => {
   const cities = useMemo((): City[] => {
     const compare = props.sortType === 'asc' ? ascCompare : descCompare;
     return mockCities
-      .filter((city) => !favourites.some((item) => city.id === item.id))
+      .filter((city) => !props.favourites.find((item) => city.id === item.id))
       .sort(compare);
-  }, [ascCompare, descCompare, favourites, props.sortType]);
+  }, [ascCompare, descCompare, props.favourites, props.sortType]);
 
   return (
     <section className="cards">
@@ -52,8 +55,16 @@ const Cards = (props: Props) => {
         ))}
       </div>
       <div className="cards__big-cards">
-        {favourites.length > 0 &&
-          favourites.map((card) => <BigCard city={card} />)}
+        {props.favourites.length > 0 &&
+          props.favourites.map((card) => (
+            <BigCard
+              city={card}
+              key={card.id}
+              onChangeSelectedCity={props.onChangeSelectedCity}
+              onWantSelectCity={props.onWantSelectCity}
+              selectedCity={props.selectedCity}
+            />
+          ))}
         <div className="cards__help">
           Перетащите сюда города, погода в которых вам интересна
         </div>

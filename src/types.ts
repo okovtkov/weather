@@ -6,3 +6,8 @@ export interface City {
 }
 
 export type SortType = 'asc' | 'desc';
+
+export interface Coord {
+  lat: number;
+  lng: number;
+}
