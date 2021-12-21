@@ -22,3 +22,4 @@ jobs:
           npm run-script deploy
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REACT_APP_MAP_KEY: ${{ secrets.APP_MAP_KEY }}
