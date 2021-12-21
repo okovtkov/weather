@@ -14,8 +14,8 @@ interface Props {
 }
 
 const BigCard = (props: Props) => {
-  const returnOldWantedCityHandler = useCallback(() => {
-    props.onWantSelectCity(props.selectedCity);
+  const removeWantedCityHandler = useCallback(() => {
+    props.onWantSelectCity(null);
   }, [props]);
 
   const changeWantedCityHandler = useCallback(() => {
@@ -32,7 +32,7 @@ const BigCard = (props: Props) => {
         'big-card_selected': props.selectedCity === props.city,
       })}
       onMouseEnter={changeWantedCityHandler}
-      onMouseLeave={returnOldWantedCityHandler}
+      onMouseLeave={removeWantedCityHandler}
       onClick={changeSelectedCityHandler}
     >
       <div className="big-card__header">

@@ -18,15 +18,15 @@ const WeatherMap = (props: Props) => {
         map: props.map,
       });
       marker.addListener('mouseover', () => props.onWantSelectCity(city));
-      marker.addListener('mouseout', () =>
-        props.onWantSelectCity(props.selectedCity)
-      );
-      if (city.id === props.desiredCity?.id) {
-        marker.setIcon(iconHover);
-      }
+      marker.addListener('mouseout', () => props.onWantSelectCity(null));
+
       if (city.id === props.selectedCity?.id) {
         marker.setIcon(icon);
       }
+      if (city.id === props.desiredCity?.id) {
+        marker.setIcon(iconHover);
+      }
+
       return marker;
     });
     setMarkers((current) => {
