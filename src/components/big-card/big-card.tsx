@@ -1,13 +1,14 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/mouse-events-have-key-events */
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import './big-card.scss';
 import classNames from 'classnames';
-import { City } from '../../types';
+import { City, Weather } from '../../types';
 
 interface Props {
   city: City;
+  weather: Weather | null;
   selectedCity: City | null;
   onChangeSelectedCity: (city: City | null) => void;
   onWantSelectCity: (city: City | null) => void;
@@ -25,6 +26,11 @@ const BigCard = (props: Props) => {
   const changeSelectedCityHandler = useCallback(() => {
     props.onChangeSelectedCity(props.city);
   }, [props]);
+
+  const temp = useMemo(() => {
+    const temperature = props.weather?.temp;
+    return temperature && temperature > 0 ? `+${temperature}` : temperature;
+  }, [props.weather?.temp]);
 
   return (
     <div
@@ -51,7 +57,7 @@ const BigCard = (props: Props) => {
             <span className="big-card__info">Ветер ЮВ, 0-1 м/с</span>
           </div>
         </div>
-        <span className="big-card__temperature">+12°</span>
+        <span className="big-card__temperature">{temp}°</span>
       </div>
     </div>
   );

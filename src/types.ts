@@ -11,3 +11,10 @@ export interface Coord {
   lat: number;
   lng: number;
 }
+
+export interface Weather {
+  name: string;
+  id: string;
+  temp: number;
+  condition: string;
+}

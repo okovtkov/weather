@@ -1,12 +1,13 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import Icon from '../icon/icon';
 import './small-card.scss';
-import { City } from '../../types';
+import { City, Weather } from '../../types';
 
 interface Props {
   city: City;
+  weather: Weather | null;
   onAddFavourite: (city: City) => void;
 }
 
@@ -15,10 +16,15 @@ const SmallCard = (props: Props) => {
     props.onAddFavourite(props.city);
   }, [props]);
 
+  const temp = useMemo(() => {
+    const temperature = props.weather?.temp;
+    return temperature && temperature > 0 ? `+${temperature}` : temperature;
+  }, [props.weather]);
+
   return (
     <div className="small-card" onClick={clickHandler}>
       <span className="small-card__city">{props.city.name}</span>
-      <span className="small-card__temperature">+17°</span>
+      <span className="small-card__temperature">{temp}°</span>
       <Icon name="strips-small" />
     </div>
   );

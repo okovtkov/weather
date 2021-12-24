@@ -1,7 +1,7 @@
-import { useMemo, useCallback } from 'react';
+import { useMemo, useCallback, useEffect, useState } from 'react';
 import SmallCard from '../small-card/small-card';
 import mockCities from './cardsData';
-import { City, SortType } from '../../types';
+import { City, SortType, Weather } from '../../types';
 import './cards.scss';
 import '../weather-content/weather-content.scss';
 import BigCard from '../big-card/big-card';
@@ -16,6 +16,8 @@ interface Props {
 }
 
 const Cards = (props: Props) => {
+  const [weatherData, setWeatherData] = useState<Weather[]>([]);
+
   const addFavouriteHandler = useCallback(
     (city: City) => {
       props.onChangeFavourites([...props.favourites, city]);
@@ -42,6 +44,40 @@ const Cards = (props: Props) => {
       .sort(compare);
   }, [ascCompare, descCompare, props.favourites, props.sortType]);
 
+  useEffect(() => {
+    const day = new Date().getDate().toString();
+    const month = new Date().getMonth();
+    const year = new Date().getFullYear();
+    const date = `${year} ${month} ${day}`;
+
+    if (localStorage.getItem('date') !== date) {
+      Promise.all(
+        cities.map((city) => {
+          return fetch(
+            `http://api.weatherapi.com/v1/current.json?key=${process.env.REACT_APP_WEATHER_KEY}&q=${city.lat},${city.lon}`
+          )
+            .then((response) => response.json())
+            .then((response) => {
+              const item = {
+                name: city.name,
+                id: city.id,
+                temp: response.current.temp_c,
+                condition: response.current.condition.text,
+              };
+              return item;
+            });
+        })
+      ).then((resp) => {
+        localStorage.setItem('date', date);
+        localStorage.setItem('weather', JSON.stringify(resp));
+        setWeatherData(resp);
+      });
+    } else {
+      const arr = localStorage.getItem('weather');
+      if (arr !== null) setWeatherData(JSON.parse(arr));
+    }
+  }, [cities]);
+
   return (
     <section className="cards">
       <h2 className="visually-hidden">Результаты сортировки</h2>
@@ -49,6 +85,7 @@ const Cards = (props: Props) => {
         {cities.map((city: City) => (
           <SmallCard
             city={city}
+            weather={weatherData.find((item) => city.id === item.id) || null}
             key={city.id}
             onAddFavourite={addFavouriteHandler}
           />
@@ -59,6 +96,7 @@ const Cards = (props: Props) => {
           props.favourites.map((card) => (
             <BigCard
               city={card}
+              weather={weatherData.find((item) => card.id === item.id) || null}
               key={card.id}
               onChangeSelectedCity={props.onChangeSelectedCity}
               onWantSelectCity={props.onWantSelectCity}
