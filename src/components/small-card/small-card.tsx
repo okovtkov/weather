@@ -7,7 +7,7 @@ import { City, Weather } from '../../types';
 
 interface Props {
   city: City;
-  weather: Weather | null;
+  weather?: Weather;
   onAddFavourite: (city: City) => void;
 }
 

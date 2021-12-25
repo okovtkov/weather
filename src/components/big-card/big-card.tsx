@@ -8,7 +8,7 @@ import { City, Weather } from '../../types';
 
 interface Props {
   city: City;
-  weather: Weather | null;
+  weather?: Weather;
   selectedCity: City | null;
   onChangeSelectedCity: (city: City | null) => void;
   onWantSelectCity: (city: City | null) => void;

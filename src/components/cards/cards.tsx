@@ -2,6 +2,7 @@ import { useMemo, useCallback, useEffect, useState } from 'react';
 import SmallCard from '../small-card/small-card';
 import mockCities from './cardsData';
 import { City, SortType, Weather } from '../../types';
+import weatherApi from '../../api/weather';
 import './cards.scss';
 import '../weather-content/weather-content.scss';
 import BigCard from '../big-card/big-card';
@@ -44,50 +45,15 @@ const Cards = (props: Props) => {
       .sort(compare);
   }, [ascCompare, descCompare, props.favourites, props.sortType]);
 
-  const getWeatherData = useCallback((city: City) => {
-    return fetch(
-      `http://api.weatherapi.com/v1/current.json?key=${process.env.REACT_APP_WEATHER_KEY}&q=${city.lat},${city.lon}`
-    )
-      .then((response) => response.json())
-      .then((response) => {
-        const item: Weather = {
-          name: city.name,
-          id: city.id,
-          temp: response.current.temp_c,
-          condition: response.current.condition.text,
-        };
-        return item;
-      });
-  }, []);
-
   useEffect(() => {
-    const day = new Date().getDate().toString();
-    const month = new Date().getMonth();
-    const year = new Date().getFullYear();
-    const date = `${year} ${month} ${day}`;
-
-    if (localStorage.getItem('date') !== date) {
-      Promise.all(cities.map((city) => getWeatherData(city))).then((resp) => {
-        localStorage.setItem('date', date);
-        localStorage.setItem('weather', JSON.stringify(resp));
-        setWeatherData(resp);
-      });
-    } else {
-      const stringWeather = localStorage.getItem('weather');
-      const weatherArray: Weather[] =
-        stringWeather !== null ? JSON.parse(stringWeather) : null;
-      Promise.all(
-        weatherArray?.map((city) => {
-          const cityCard = props.favourites.find((item) => item.id === city.id);
-          if (!cityCard) return city;
-
-          const cityData = mockCities.find((item) => item.id === cityCard.id);
-          if (!cityData) throw new Error('Такого города не существует');
-          return getWeatherData(cityData);
-        })
-      ).then((resp) => setWeatherData(resp));
-    }
-  }, [cities, getWeatherData, props.favourites]);
+    const time = 1000 * 3600;
+    weatherApi.current(cities, { cacheMs: time }).then((weather) => {
+      setWeatherData((old) => old.concat(weather));
+    });
+    weatherApi.current(props.favourites, { cacheMs: time }).then((weather) => {
+      setWeatherData((old) => old.concat(weather));
+    });
+  }, [cities, props.favourites]);
 
   return (
     <section className="cards">
@@ -96,7 +62,7 @@ const Cards = (props: Props) => {
         {cities.map((city: City) => (
           <SmallCard
             city={city}
-            weather={weatherData.find((item) => city.id === item.id) || null}
+            weather={weatherData.find((item) => city.id === item.id)}
             key={city.id}
             onAddFavourite={addFavouriteHandler}
           />
@@ -107,7 +73,7 @@ const Cards = (props: Props) => {
           props.favourites.map((card) => (
             <BigCard
               city={card}
-              weather={weatherData.find((item) => card.id === item.id) || null}
+              weather={weatherData.find((item) => card.id === item.id)}
               key={card.id}
               onChangeSelectedCity={props.onChangeSelectedCity}
               onWantSelectCity={props.onWantSelectCity}
