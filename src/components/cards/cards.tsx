@@ -44,6 +44,22 @@ const Cards = (props: Props) => {
       .sort(compare);
   }, [ascCompare, descCompare, props.favourites, props.sortType]);
 
+  const getWeatherData = useCallback((city: City) => {
+    return fetch(
+      `http://api.weatherapi.com/v1/current.json?key=${process.env.REACT_APP_WEATHER_KEY}&q=${city.lat},${city.lon}`
+    )
+      .then((response) => response.json())
+      .then((response) => {
+        const item: Weather = {
+          name: city.name,
+          id: city.id,
+          temp: response.current.temp_c,
+          condition: response.current.condition.text,
+        };
+        return item;
+      });
+  }, []);
+
   useEffect(() => {
     const day = new Date().getDate().toString();
     const month = new Date().getMonth();
@@ -51,32 +67,27 @@ const Cards = (props: Props) => {
     const date = `${year} ${month} ${day}`;
 
     if (localStorage.getItem('date') !== date) {
-      Promise.all(
-        cities.map((city) => {
-          return fetch(
-            `http://api.weatherapi.com/v1/current.json?key=${process.env.REACT_APP_WEATHER_KEY}&q=${city.lat},${city.lon}`
-          )
-            .then((response) => response.json())
-            .then((response) => {
-              const item = {
-                name: city.name,
-                id: city.id,
-                temp: response.current.temp_c,
-                condition: response.current.condition.text,
-              };
-              return item;
-            });
-        })
-      ).then((resp) => {
+      Promise.all(cities.map((city) => getWeatherData(city))).then((resp) => {
         localStorage.setItem('date', date);
         localStorage.setItem('weather', JSON.stringify(resp));
         setWeatherData(resp);
       });
     } else {
-      const arr = localStorage.getItem('weather');
-      if (arr !== null) setWeatherData(JSON.parse(arr));
+      const stringWeather = localStorage.getItem('weather');
+      const weatherArray: Weather[] =
+        stringWeather !== null ? JSON.parse(stringWeather) : null;
+      Promise.all(
+        weatherArray?.map((city) => {
+          const cityCard = props.favourites.find((item) => item.id === city.id);
+          if (!cityCard) return city;
+
+          const cityData = mockCities.find((item) => item.id === cityCard.id);
+          if (!cityData) throw new Error('Такого города не существует');
+          return getWeatherData(cityData);
+        })
+      ).then((resp) => setWeatherData(resp));
     }
-  }, [cities]);
+  }, [cities, getWeatherData, props.favourites]);
 
   return (
     <section className="cards">
