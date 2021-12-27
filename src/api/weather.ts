@@ -37,7 +37,7 @@ const weatherApi = {
           name: city.name,
           id: city.id,
           temp: response.current.temp_c,
-          condition: response.current.condition.text,
+          condition: response.current.condition.code,
         };
         return item;
       });

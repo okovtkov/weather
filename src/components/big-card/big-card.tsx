@@ -5,6 +5,7 @@ import { useCallback, useMemo } from 'react';
 import './big-card.scss';
 import classNames from 'classnames';
 import { City, Weather } from '../../types';
+import translateWeather from './translateWeather';
 
 interface Props {
   city: City;
@@ -48,9 +49,13 @@ const BigCard = (props: Props) => {
       <div className="big-card__content">
         <div className="big-card__content-wrapper">
           <div className="big-card__weather-conditions">
-            <span className="icon icon--rainy" />
-            <span className="icon icon--meteor-shower" />
-            <span className="icon icon--tornado" />
+            <span
+              className={`icon icon--${
+                props.weather
+                  ? translateWeather(props.weather?.condition)
+                  : 'none'
+              }`}
+            />
           </div>
           <div className="big-card__wind">
             <span className="icon icon--wind" />
