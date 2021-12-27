@@ -32,12 +32,7 @@ rules: {
     tsx: 'never'
   }],
   jsx-a11y/label-has-associated-control: ['error', { assert: 'either' }],
-  prettier/prettier: [
-  'warn',
-    {
-      'endOfLine': 'auto',
-    }
-  ],
+  prettier/prettier: 'warn',
   react/destructuring-assignment: ['error', 'never'],
   react/function-component-definition: ['error', { namedComponents: 'arrow-function' }],
   react/jsx-filename-extension: ['error', { extensions: ['.ts', '.tsx'] }],

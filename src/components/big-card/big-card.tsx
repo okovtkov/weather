@@ -50,11 +50,9 @@ const BigCard = (props: Props) => {
       <div className="big-card__content">
         <div className="big-card__content-wrapper">
           <div className="big-card__weather-conditions">
-            <Icon
-              name={
-                props.weather ? getIconName(props.weather?.condition) : 'none'
-              }
-            />
+            {props.weather && (
+              <Icon name={getIconName(props.weather?.condition)} />
+            )}
           </div>
           <div className="big-card__wind">
             <span className="icon icon--wind" />
