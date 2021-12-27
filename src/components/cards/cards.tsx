@@ -1,7 +1,8 @@
-import { useMemo, useCallback } from 'react';
+import { useMemo, useCallback, useEffect, useState } from 'react';
 import SmallCard from '../small-card/small-card';
 import mockCities from './cardsData';
-import { City, SortType } from '../../types';
+import { City, SortType, Weather } from '../../types';
+import weatherApi from '../../api/weather';
 import './cards.scss';
 import '../weather-content/weather-content.scss';
 import BigCard from '../big-card/big-card';
@@ -16,6 +17,8 @@ interface Props {
 }
 
 const Cards = (props: Props) => {
+  const [weatherData, setWeatherData] = useState<Weather[]>([]);
+
   const addFavouriteHandler = useCallback(
     (city: City) => {
       props.onChangeFavourites([...props.favourites, city]);
@@ -42,6 +45,16 @@ const Cards = (props: Props) => {
       .sort(compare);
   }, [ascCompare, descCompare, props.favourites, props.sortType]);
 
+  useEffect(() => {
+    const time = 1000 * 3600;
+    weatherApi.current(cities, { cacheMs: time }).then((weather) => {
+      setWeatherData((old) => old.concat(weather));
+    });
+    weatherApi.current(props.favourites, { cacheMs: time }).then((weather) => {
+      setWeatherData((old) => old.concat(weather));
+    });
+  }, [cities, props.favourites]);
+
   return (
     <section className="cards">
       <h2 className="visually-hidden">Результаты сортировки</h2>
@@ -49,6 +62,7 @@ const Cards = (props: Props) => {
         {cities.map((city: City) => (
           <SmallCard
             city={city}
+            weather={weatherData.find((item) => city.id === item.id)}
             key={city.id}
             onAddFavourite={addFavouriteHandler}
           />
@@ -59,6 +73,7 @@ const Cards = (props: Props) => {
           props.favourites.map((card) => (
             <BigCard
               city={card}
+              weather={weatherData.find((item) => card.id === item.id)}
               key={card.id}
               onChangeSelectedCity={props.onChangeSelectedCity}
               onWantSelectCity={props.onWantSelectCity}

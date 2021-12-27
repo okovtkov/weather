@@ -1,13 +1,16 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/mouse-events-have-key-events */
-import { useCallback } from 'react';
-import './big-card.scss';
+import { useCallback, useMemo } from 'react';
 import classNames from 'classnames';
-import { City } from '../../types';
+import Icon from '../icon/icon';
+import './big-card.scss';
+import { City, Weather } from '../../types';
+import getIconName from './iconName';
 
 interface Props {
   city: City;
+  weather?: Weather;
   selectedCity: City | null;
   onChangeSelectedCity: (city: City | null) => void;
   onWantSelectCity: (city: City | null) => void;
@@ -26,6 +29,11 @@ const BigCard = (props: Props) => {
     props.onChangeSelectedCity(props.city);
   }, [props]);
 
+  const temp = useMemo(() => {
+    const temperature = props.weather?.temp;
+    return temperature && temperature > 0 ? `+${temperature}` : temperature;
+  }, [props.weather?.temp]);
+
   return (
     <div
       className={classNames('big-card', {
@@ -42,16 +50,16 @@ const BigCard = (props: Props) => {
       <div className="big-card__content">
         <div className="big-card__content-wrapper">
           <div className="big-card__weather-conditions">
-            <span className="icon icon--rainy" />
-            <span className="icon icon--meteor-shower" />
-            <span className="icon icon--tornado" />
+            {props.weather && (
+              <Icon name={getIconName(props.weather?.condition)} />
+            )}
           </div>
           <div className="big-card__wind">
             <span className="icon icon--wind" />
             <span className="big-card__info">Ветер ЮВ, 0-1 м/с</span>
           </div>
         </div>
-        <span className="big-card__temperature">+12°</span>
+        <span className="big-card__temperature">{temp}°</span>
       </div>
     </div>
   );
