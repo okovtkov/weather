@@ -1,6 +1,6 @@
 import { WeatherCondition } from '../../types';
 
-const translateWeather = (weatherCondition: WeatherCondition): string => {
+const getIconName = (weatherCondition: WeatherCondition): string => {
   const rainy = [
     WeatherCondition.PATCHY_RAIN_POSSIBLE,
     WeatherCondition.PATCHY_LIGHT_DRIZZLE,
@@ -46,12 +46,12 @@ const translateWeather = (weatherCondition: WeatherCondition): string => {
   ];
   const blizzard = [WeatherCondition.BLIZZARD];
 
-  if (rainy.find((item) => item === weatherCondition)) return 'rainy';
-  if (sunny.find((item) => item === weatherCondition)) return 'sunny';
-  if (cloudy.find((item) => item === weatherCondition)) return 'cloudy';
-  if (snowy.find((item) => item === weatherCondition)) return 'snowy';
-  if (blizzard.find((item) => item === weatherCondition)) return 'blizzard';
+  if (rainy.includes(weatherCondition)) return 'rainy';
+  if (sunny.includes(weatherCondition)) return 'sunny';
+  if (cloudy.includes(weatherCondition)) return 'cloudy';
+  if (snowy.includes(weatherCondition)) return 'snowy';
+  if (blizzard.includes(weatherCondition)) return 'blizzard';
   return 'none';
 };
 
-export default translateWeather;
+export default getIconName;

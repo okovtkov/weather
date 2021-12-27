@@ -1,28 +1,28 @@
-import { useState, useEffect } from 'react';
+import { useState, useCallback } from 'react';
 import { City } from '../../types';
 import WeatherContent from '../weather-content/weather-content';
 import WeatherMap from '../weather-map';
 
 const WeatherApp = () => {
-  const [favourites, setFavourites] = useState<City[]>([]);
+  const [favourites, setFavourites] = useState<City[]>(() => {
+    const cards = localStorage.getItem('favourites');
+    if (cards) return JSON.parse(cards);
+    return [];
+  });
   const [selectedCity, setSelectedCity] = useState<City | null>(null);
   const [desiredCity, setDesiredCity] = useState<City | null>(null);
 
-  useEffect(() => {
-    const cards = localStorage.getItem('favourites');
-    if (cards) setFavourites(JSON.parse(cards));
+  const changeFavouritesHandler = useCallback((newFavouriteArray) => {
+    setFavourites(newFavouriteArray);
+    localStorage.setItem('favourites', JSON.stringify(newFavouriteArray));
   }, []);
-
-  useEffect(() => {
-    localStorage.setItem('favourites', JSON.stringify(favourites));
-  }, [favourites]);
 
   return (
     <div className="weather-app">
       <WeatherContent
         favourites={favourites}
         selectedCity={selectedCity}
-        onChangeFavourites={setFavourites}
+        onChangeFavourites={changeFavouritesHandler}
         onChangeSelectedCity={setSelectedCity}
         onWantSelectCity={setDesiredCity}
       />

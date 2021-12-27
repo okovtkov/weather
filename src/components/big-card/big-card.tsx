@@ -2,10 +2,11 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/mouse-events-have-key-events */
 import { useCallback, useMemo } from 'react';
-import './big-card.scss';
 import classNames from 'classnames';
+import Icon from '../icon/icon';
+import './big-card.scss';
 import { City, Weather } from '../../types';
-import translateWeather from './translateWeather';
+import getIconName from './iconName';
 
 interface Props {
   city: City;
@@ -49,12 +50,10 @@ const BigCard = (props: Props) => {
       <div className="big-card__content">
         <div className="big-card__content-wrapper">
           <div className="big-card__weather-conditions">
-            <span
-              className={`icon icon--${
-                props.weather
-                  ? translateWeather(props.weather?.condition)
-                  : 'none'
-              }`}
+            <Icon
+              name={
+                props.weather ? getIconName(props.weather?.condition) : 'none'
+              }
             />
           </div>
           <div className="big-card__wind">
