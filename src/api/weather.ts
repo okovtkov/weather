@@ -36,7 +36,7 @@ const weatherApi = {
 
   cityWeather(city: City) {
     return fetch(
-      `http://api.weatherapi.com/v1/current.json?key=${process.env.REACT_APP_WEATHER_KEY}&q=${city.lat},${city.lon}`
+      `https://api.weatherapi.com/v1/current.json?key=${process.env.REACT_APP_WEATHER_KEY}&q=${city.lat},${city.lon}`
     )
       .then((response) => response.json())
       .then((response) => {
