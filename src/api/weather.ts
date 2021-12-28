@@ -12,10 +12,17 @@ const weatherApi = {
       ? Number(localStorage.getItem('date'))
       : 0;
     const timeDiff = now - cachedAt;
-    if (options?.cacheMs && timeDiff < options.cacheMs) {
+    if (options?.cacheMs && timeDiff < options?.cacheMs) {
       const localWeather = localStorage.getItem('weather');
       if (!localWeather) throw new Error('Что-то не то');
       return Promise.resolve(JSON.parse(localWeather));
+    }
+
+    // в случае с избранными, получать погоду при каждой загрузке
+    if (!options?.cacheMs) {
+      return Promise.all(
+        cities.map((city) => this.cityWeather(city).then((resp) => resp))
+      );
     }
 
     return Promise.all(cities.map((city) => this.cityWeather(city))).then(
@@ -29,7 +36,7 @@ const weatherApi = {
 
   cityWeather(city: City) {
     return fetch(
-      `http://api.weatherapi.com/v1/current.json?key=${process.env.REACT_APP_WEATHER_KEY}&q=${city.lat},${city.lon}`
+      `https://api.weatherapi.com/v1/current.json?key=${process.env.REACT_APP_WEATHER_KEY}&q=${city.lat},${city.lon}`
     )
       .then((response) => response.json())
       .then((response) => {

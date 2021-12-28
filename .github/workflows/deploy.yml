@@ -23,4 +23,5 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REACT_APP_MAP_KEY: ${{ secrets.APP_MAP_KEY }}
+          REACT_APP_WEATHER_KEY: ${{ secrets.APP_WEATHER_KEY }}
           DISABLE_ESLINT_PLUGIN: 'true'
