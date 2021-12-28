@@ -9,6 +9,7 @@ import BigCard from '../big-card/big-card';
 
 interface Props {
   selectedCity: City | null;
+  desiredCity: City | null;
   sortType: SortType;
   favourites: City[];
   onChangeFavourites: (cities: City[]) => void;
@@ -78,6 +79,7 @@ const Cards = (props: Props) => {
               onChangeSelectedCity={props.onChangeSelectedCity}
               onWantSelectCity={props.onWantSelectCity}
               selectedCity={props.selectedCity}
+              desiredCity={props.desiredCity}
             />
           ))}
         <div className="cards__help">

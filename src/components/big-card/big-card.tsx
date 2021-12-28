@@ -12,6 +12,7 @@ interface Props {
   city: City;
   weather?: Weather;
   selectedCity: City | null;
+  desiredCity: City | null;
   onChangeSelectedCity: (city: City | null) => void;
   onWantSelectCity: (city: City | null) => void;
 }
@@ -37,7 +38,8 @@ const BigCard = (props: Props) => {
   return (
     <div
       className={classNames('big-card', {
-        'big-card_selected': props.selectedCity === props.city,
+        'big-card_selected': props.selectedCity?.id === props.city.id,
+        'big-card_desired': props.desiredCity?.id === props.city.id,
       })}
       onMouseEnter={changeWantedCityHandler}
       onMouseLeave={removeWantedCityHandler}
