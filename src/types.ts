@@ -68,4 +68,6 @@ export interface Weather {
   id: string;
   temp: number;
   condition: WeatherCondition;
+  wind: number;
+  windDir: string;
 }

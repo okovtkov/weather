@@ -58,7 +58,9 @@ const BigCard = (props: Props) => {
           </div>
           <div className="big-card__wind">
             <span className="icon icon--wind" />
-            <span className="big-card__info">Ветер ЮВ, 0-1 м/с</span>
+            <span className="big-card__info">
+              Ветер {props.weather?.windDir}, {props.weather?.wind} м/с
+            </span>
           </div>
         </div>
         <span className="big-card__temperature">{temp}°</span>

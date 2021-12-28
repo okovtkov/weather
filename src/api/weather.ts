@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { City, Weather } from '../types';
 
 interface WeatherGetterOptions {
@@ -40,14 +41,41 @@ const weatherApi = {
     )
       .then((response) => response.json())
       .then((response) => {
+        const speed = (response.current.wind_kph * 1000) / 3600;
+        const windDir = this.translateWindDir(response.current.wind_dir);
+
         const item: Weather = {
           name: city.name,
           id: city.id,
           temp: response.current.temp_c,
           condition: response.current.condition.code,
+          wind: Number(speed.toFixed(1)),
+          windDir,
         };
         return item;
       });
+  },
+
+  translateWindDir(dir: string) {
+    switch (dir) {
+      case 'N': return 'С';
+      case 'NNE': return 'С-СВ';
+      case 'NE': return 'СВ';
+      case 'ENE': return 'В-СВ';
+      case 'E': return 'В';
+      case 'ESE': return 'В-ЮВ';
+      case 'SE': return 'ЮВ';
+      case 'SSE': return 'Ю-ЮВ';
+      case 'S': return 'Ю';
+      case 'SSW': return 'Ю-ЮЗ';
+      case 'SW': return 'ЮЗ';
+      case 'WSW': return 'З-ЮЗ';
+      case 'W': return 'З';
+      case 'WNW': return 'З-СЗ';
+      case 'NW': return 'СЗ';
+      case 'NNW': return 'С-СЗ';
+      default: return '';
+    }
   },
 };
 
