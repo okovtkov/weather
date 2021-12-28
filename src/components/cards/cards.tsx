@@ -50,7 +50,7 @@ const Cards = (props: Props) => {
     weatherApi.current(cities, { cacheMs: time }).then((weather) => {
       setWeatherData((old) => old.concat(weather));
     });
-    weatherApi.current(props.favourites, { cacheMs: time }).then((weather) => {
+    weatherApi.current(props.favourites).then((weather) => {
       setWeatherData((old) => old.concat(weather));
     });
   }, [cities, props.favourites]);
