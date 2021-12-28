@@ -100,11 +100,21 @@
 }
 
 .big-card:hover .big-card__header,
-.big-card_selected {
-  background-color: var(--color-blue-light);
+.big-card_desired .big-card__header {
+  background-color: var(--color-blue-hover-header);
+  color: var(--color-text-white);
+}
+
+.big-card_desired .big-card__info {
+  color: var(--color-text-white);
 }
 
 .big-card:hover .big-card__content,
+.big-card_desired .big-card__content {
+  background-color: var(--color-blue-hover-content);
+  color: var(--color-text-white);
+}
+
 .big-card_selected {
   background-color: var(--color-blue-main);
 }

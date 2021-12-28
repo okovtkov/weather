@@ -22,6 +22,7 @@ const WeatherApp = () => {
       <WeatherContent
         favourites={favourites}
         selectedCity={selectedCity}
+        desiredCity={desiredCity}
         onChangeFavourites={changeFavouritesHandler}
         onChangeSelectedCity={setSelectedCity}
         onWantSelectCity={setDesiredCity}
