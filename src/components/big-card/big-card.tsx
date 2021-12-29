@@ -56,12 +56,18 @@ const BigCard = (props: Props) => {
               <Icon name={getIconName(props.weather?.condition)} />
             )}
           </div>
-          <div className="big-card__wind">
-            <span className="icon icon--wind" />
-            <span className="big-card__info">
-              Ветер {props.weather?.windDir}, {props.weather?.wind} м/с
-            </span>
-          </div>
+          {props.weather?.windDir && (
+            <div className="big-card__wind">
+              <span className="icon icon--wind" />
+              <span className="big-card__info">
+                Ветер {props.weather.windDir},{' '}
+                {props.weather.wind % 1 === 0
+                  ? props.weather.wind
+                  : Number(props.weather.wind.toFixed(1))}{' '}
+                м/с
+              </span>
+            </div>
+          )}
         </div>
         <span className="big-card__temperature">{temp}°</span>
       </div>

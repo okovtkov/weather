@@ -49,7 +49,7 @@ const weatherApi = {
           id: city.id,
           temp: response.current.temp_c,
           condition: response.current.condition.code,
-          wind: Number(speed.toFixed(1)),
+          wind: speed,
           windDir,
         };
         return item;
