@@ -1,13 +1,19 @@
-import { useCallback, useState, ChangeEvent } from 'react';
+import { useCallback, ChangeEvent } from 'react';
 import InputWrapper from '../input-wrapper/input-wrapper';
 import './sort-form.scss';
 
-const Search = () => {
-  const [text, setText] = useState('');
+interface Props {
+  query: string;
+  onChangeQuery: (param: string) => void;
+}
 
-  const changeHandler = useCallback((event: ChangeEvent<HTMLInputElement>) => {
-    setText(event.target.value);
-  }, []);
+const Search = (props: Props) => {
+  const changeHandler = useCallback(
+    (event: ChangeEvent<HTMLInputElement>) => {
+      props.onChangeQuery(event.target.value);
+    },
+    [props]
+  );
 
   return (
     <div className="sort-form__group">
@@ -15,7 +21,7 @@ const Search = () => {
         className="sort-form__input-wrapper"
         type="search"
         name="search-city"
-        value={text}
+        value={props.query}
         id="search"
         label="Поиск городов"
         placeholder="Название города"

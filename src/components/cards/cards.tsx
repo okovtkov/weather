@@ -1,6 +1,5 @@
 import { useMemo, useCallback, useEffect, useState } from 'react';
 import SmallCard from '../small-card/small-card';
-import mockCities from './cardsData';
 import { City, SortType, Weather } from '../../types';
 import weatherApi from '../../api/weather';
 import './cards.scss';
@@ -12,6 +11,7 @@ interface Props {
   desiredCity: City | null;
   sortType: SortType;
   favourites: City[];
+  cities: City[];
   onChangeFavourites: (cities: City[]) => void;
   onChangeSelectedCity: (city: City | null) => void;
   onWantSelectCity: (city: City | null) => void;
@@ -41,10 +41,8 @@ const Cards = (props: Props) => {
 
   const cities = useMemo((): City[] => {
     const compare = props.sortType === 'asc' ? ascCompare : descCompare;
-    return mockCities
-      .filter((city) => !props.favourites.find((item) => city.id === item.id))
-      .sort(compare);
-  }, [ascCompare, descCompare, props.favourites, props.sortType]);
+    return props.cities.sort(compare);
+  }, [ascCompare, descCompare, props.cities, props.sortType]);
 
   useEffect(() => {
     const time = 1000 * 3600;
