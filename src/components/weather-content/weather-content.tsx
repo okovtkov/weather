@@ -19,12 +19,10 @@ const WeatherContent = (props: Props) => {
   const [searchQuery, setSearchQuery] = useState<string>('');
 
   const filteredCities = useMemo(() => {
-    const newCities = mockCities.filter(
-      (city) => !props.favourites.find((item) => city.id === item.id)
-    );
-    return newCities.filter((item) =>
-      item.name.toLowerCase().includes(searchQuery.toLowerCase())
-    );
+    return mockCities.filter((item) => {
+      if (props.favourites.find((city) => city.id === item.id)) return false;
+      return item.name.toLowerCase().includes(searchQuery.toLowerCase());
+    });
   }, [props.favourites, searchQuery]);
 
   return (
