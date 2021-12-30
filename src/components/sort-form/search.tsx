@@ -3,14 +3,14 @@ import InputWrapper from '../input-wrapper/input-wrapper';
 import './sort-form.scss';
 
 interface Props {
-  text: string;
-  onChangeText: (param: string) => void;
+  query: string;
+  onChangeQuery: (param: string) => void;
 }
 
 const Search = (props: Props) => {
   const changeHandler = useCallback(
     (event: ChangeEvent<HTMLInputElement>) => {
-      props.onChangeText(event.target.value);
+      props.onChangeQuery(event.target.value);
     },
     [props]
   );
@@ -21,7 +21,7 @@ const Search = (props: Props) => {
         className="sort-form__input-wrapper"
         type="search"
         name="search-city"
-        value={props.text}
+        value={props.query}
         id="search"
         label="Поиск городов"
         placeholder="Название города"
