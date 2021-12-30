@@ -6,9 +6,11 @@ import SortByWeatherCondition from './sort-by-weather-condition';
 import { SortType } from '../../types';
 
 interface Props {
+  text: string;
   className: string;
   sortType: SortType;
   onChangeSortType: (param: SortType) => void;
+  onChangeText: (param: string) => void;
 }
 
 const SortForm = (props: Props) => {
@@ -20,7 +22,7 @@ const SortForm = (props: Props) => {
           sortType={props.sortType}
           onChangeSortType={props.onChangeSortType}
         />
-        <Search />
+        <Search text={props.text} onChangeText={props.onChangeText} />
         <SortByWeatherCondition />
       </form>
     </section>
