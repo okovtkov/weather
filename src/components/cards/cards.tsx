@@ -12,6 +12,7 @@ interface Props {
   sortType: SortType;
   favourites: City[];
   cities: City[];
+  conditions: string[];
   onChangeFavourites: (cities: City[]) => void;
   onChangeSelectedCity: (city: City | null) => void;
   onWantSelectCity: (city: City | null) => void;
@@ -69,17 +70,28 @@ const Cards = (props: Props) => {
       </div>
       <div className="cards__big-cards">
         {props.favourites.length > 0 &&
-          props.favourites.map((card) => (
-            <BigCard
-              city={card}
-              weather={weatherData.find((item) => card.id === item.id)}
-              key={card.id}
-              onChangeSelectedCity={props.onChangeSelectedCity}
-              onWantSelectCity={props.onWantSelectCity}
-              selectedCity={props.selectedCity}
-              desiredCity={props.desiredCity}
-            />
-          ))}
+          props.favourites.map((card) => {
+            const weather = weatherData.find((item) => card.id === item.id);
+            const cityCondition = weather
+              ? weatherApi.getConditionText(weather.condition)
+              : '';
+            if (
+              (weather && props.conditions.includes(cityCondition)) ||
+              props.conditions.length === 0
+            )
+              return (
+                <BigCard
+                  city={card}
+                  weather={weather}
+                  key={card.id}
+                  onChangeSelectedCity={props.onChangeSelectedCity}
+                  onWantSelectCity={props.onWantSelectCity}
+                  selectedCity={props.selectedCity}
+                  desiredCity={props.desiredCity}
+                />
+              );
+            return null;
+          })}
         <div className="cards__help">
           Перетащите сюда города, погода в которых вам интересна
         </div>
