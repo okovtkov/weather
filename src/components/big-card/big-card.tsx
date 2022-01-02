@@ -4,9 +4,9 @@
 import { useCallback, useMemo } from 'react';
 import classNames from 'classnames';
 import Icon from '../icon/icon';
-import './big-card.scss';
 import { City, Weather } from '../../types';
-import getIconName from './iconName';
+import utils from '../../utils';
+import './big-card.scss';
 
 interface Props {
   city: City;
@@ -53,7 +53,7 @@ const BigCard = (props: Props) => {
         <div className="big-card__content-wrapper">
           <div className="big-card__weather-conditions">
             {props.weather && (
-              <Icon name={getIconName(props.weather?.condition)} />
+              <Icon name={utils.getConditionText(props.weather?.condition)} />
             )}
           </div>
           {props.weather?.windDir && (

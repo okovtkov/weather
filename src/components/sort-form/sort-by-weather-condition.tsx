@@ -1,72 +1,45 @@
+import { useCallback } from 'react';
 import InputWrapper from '../input-wrapper/input-wrapper';
+import conditions from './conditions';
 import './sort-form.scss';
 
-const SortByWeatherCondition = () => {
+interface Props {
+  onChangeCondition: (param: string[]) => void;
+  conditions: string[];
+}
+
+const SortByWeatherCondition = (props: Props) => {
+  const changeConditionQueryHandler = useCallback(
+    (event) => {
+      const condition = event.target.value;
+      const conditions = new Set(props.conditions);
+
+      if (conditions.has(condition)) {
+        conditions.delete(condition);
+      } else {
+        conditions.add(condition);
+      }
+
+      props.onChangeCondition(Array.from(conditions));
+    },
+    [props]
+  );
+
   return (
     <div className="sort-form__group">
-      <InputWrapper
-        className="sort-form__input-wrapper"
-        type="checkbox"
-        id="rainy"
-        name="weather-conditions"
-        value="rainy"
-        label="Дождливо"
-        iconName="rainy"
-      />
-      <InputWrapper
-        className="sort-form__input-wrapper"
-        type="checkbox"
-        id="sunny"
-        name="weather-conditions"
-        value="sunny"
-        label="Солнечно"
-        iconName="sunny"
-      />
-      <InputWrapper
-        className="sort-form__input-wrapper"
-        type="checkbox"
-        id="cloudy"
-        name="weather-conditions"
-        value="cloudy"
-        label="Облачно"
-        iconName="cloudy"
-      />
-      <InputWrapper
-        className="sort-form__input-wrapper"
-        type="checkbox"
-        id="snowy"
-        name="weather-conditions"
-        value="snowy"
-        label="Снежно"
-        iconName="snowy"
-      />
-      <InputWrapper
-        className="sort-form__input-wrapper"
-        type="checkbox"
-        id="stormy"
-        name="weather-conditions"
-        value="stormy"
-        label="Торнадо"
-        iconName="stormy"
-      />
-      <InputWrapper
-        className="sort-form__input-wrapper"
-        type="checkbox"
-        id="blizzard"
-        name="weather-conditions"
-        value="blizzard"
-        label="Гроза"
-        iconName="blizzard"
-      />
-      <InputWrapper
-        className="sort-form__input-wrapper"
-        type="checkbox"
-        id="metorite"
-        name="weather-conditions"
-        value="metorite"
-        label="Метеоритный дождь"
-        iconName="metorite"
-      />
+      {conditions.map((item) => (
+        <InputWrapper
+          className="sort-form__input-wrapper"
+          type="checkbox"
+          key={item.name}
+          id={item.name}
+          name="weather-conditions"
+          value={item.name}
+          label={item.desc}
+          iconName={item.name}
+          onChange={changeConditionQueryHandler}
+        />
+      ))}
     </div>
   );
 };

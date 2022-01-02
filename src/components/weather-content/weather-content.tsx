@@ -16,7 +16,8 @@ interface Props {
 
 const WeatherContent = (props: Props) => {
   const [sortType, setSortType] = useState<SortType>('asc');
-  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [condition, setCondition] = useState<string[]>([]);
 
   const filteredCities = useMemo(() => {
     return mockCities.filter((item) => {
@@ -31,11 +32,14 @@ const WeatherContent = (props: Props) => {
         className="weather-content__sort"
         sortType={sortType}
         searchQuery={searchQuery}
+        conditions={condition}
         onChangeSortType={setSortType}
         onChangeSearchQuery={setSearchQuery}
+        onChangeCondition={setCondition}
       />
       <Cards
         cities={filteredCities}
+        conditions={condition}
         favourites={props.favourites}
         onChangeFavourites={props.onChangeFavourites}
         onChangeSelectedCity={props.onChangeSelectedCity}
