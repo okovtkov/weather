@@ -18,6 +18,12 @@ interface Props {
   onWantSelectCity: (city: City | null) => void;
 }
 
+interface WeatherData {
+  city: City;
+  data: Weather;
+  condition: string;
+}
+
 const Cards = (props: Props) => {
   const [weatherData, setWeatherData] = useState<Weather[]>([]);
 
@@ -55,6 +61,19 @@ const Cards = (props: Props) => {
     });
   }, [cities, props.favourites]);
 
+  const weather = useMemo((): WeatherData[] => {
+    return props.favourites.map((card) => {
+      const data = weatherData.find((item) => card.id === item.id) || null;
+      if (!data) throw new Error('ааааааааа');
+
+      return {
+        city: card,
+        data,
+        condition: data ? weatherApi.getConditionText(data.condition) : '',
+      };
+    });
+  }, [props.favourites, weatherData]);
+
   return (
     <section className="cards">
       <h2 className="visually-hidden">Результаты сортировки</h2>
@@ -69,29 +88,21 @@ const Cards = (props: Props) => {
         ))}
       </div>
       <div className="cards__big-cards">
-        {props.favourites.length > 0 &&
-          props.favourites.map((card) => {
-            const weather = weatherData.find((item) => card.id === item.id);
-            const cityCondition = weather
-              ? weatherApi.getConditionText(weather.condition)
-              : '';
-            if (
-              (weather && props.conditions.includes(cityCondition)) ||
-              props.conditions.length === 0
+        {weather.map(
+          (card) =>
+            ((props.conditions.length === 0 && card.data) ||
+              (props.conditions.includes(card.condition) && card.data)) && (
+              <BigCard
+                city={card.city}
+                weather={card?.data}
+                key={card.city.id}
+                onChangeSelectedCity={props.onChangeSelectedCity}
+                onWantSelectCity={props.onWantSelectCity}
+                selectedCity={props.selectedCity}
+                desiredCity={props.desiredCity}
+              />
             )
-              return (
-                <BigCard
-                  city={card}
-                  weather={weather}
-                  key={card.id}
-                  onChangeSelectedCity={props.onChangeSelectedCity}
-                  onWantSelectCity={props.onWantSelectCity}
-                  selectedCity={props.selectedCity}
-                  desiredCity={props.desiredCity}
-                />
-              );
-            return null;
-          })}
+        )}
         <div className="cards__help">
           Перетащите сюда города, погода в которых вам интересна
         </div>
