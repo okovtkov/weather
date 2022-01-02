@@ -12,7 +12,7 @@ interface Props {
   conditions: string[];
   onChangeSortType: (param: SortType) => void;
   onChangeSearchQuery: (param: string) => void;
-  onChangeConditionQuery: (param: string[]) => void;
+  onChangeCondition: (param: string[]) => void;
 }
 
 const SortForm = (props: Props) => {
@@ -29,7 +29,7 @@ const SortForm = (props: Props) => {
           onChangeQuery={props.onChangeSearchQuery}
         />
         <SortByWeatherCondition
-          onChangeConditionQuery={props.onChangeConditionQuery}
+          onChangeCondition={props.onChangeCondition}
           conditions={props.conditions}
         />
       </form>

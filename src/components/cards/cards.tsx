@@ -5,6 +5,8 @@ import weatherApi from '../../api/weather';
 import './cards.scss';
 import '../weather-content/weather-content.scss';
 import BigCard from '../big-card/big-card';
+import utils from '../../utils';
+import mockCities from './cardsData';
 
 interface Props {
   selectedCity: City | null;
@@ -18,9 +20,9 @@ interface Props {
   onWantSelectCity: (city: City | null) => void;
 }
 
-interface WeatherData {
+interface FavouritesData {
   city: City;
-  data: Weather;
+  weather: Weather;
   condition: string;
 }
 
@@ -51,28 +53,48 @@ const Cards = (props: Props) => {
     return props.cities.sort(compare);
   }, [ascCompare, descCompare, props.cities, props.sortType]);
 
+  const favouritesData = useMemo((): FavouritesData[] => {
+    if (weatherData.length < props.cities.length + 1) return [];
+    return props.favourites.map((city) => {
+      const weather = weatherData.find((item) => item.id === city.id);
+      if (!weather) throw new Error('что-то не то');
+
+      const condition = utils.getConditionText(weather.condition);
+      return { city, weather, condition };
+    });
+  }, [props.cities.length, props.favourites, weatherData]);
+
   useEffect(() => {
     const time = 1000 * 3600;
+
     weatherApi.current(cities, { cacheMs: time }).then((weather) => {
-      setWeatherData((old) => old.concat(weather));
+      setWeatherData((old) => {
+        if (old.length === 0) return weather;
+        if (old.length === mockCities.length) {
+          return old.map((item) => {
+            const newWeather = weather.find((i) => i.id === item.id);
+            if (newWeather) return newWeather;
+            return item;
+          });
+        }
+        return old.concat(weather);
+      });
     });
+
     weatherApi.current(props.favourites).then((weather) => {
-      setWeatherData((old) => old.concat(weather));
+      setWeatherData((old) => {
+        if (old.length === 0) return weather;
+        if (old.length === mockCities.length) {
+          return old.map((item) => {
+            const newWeather = weather.find((i) => i.id === item.id);
+            if (newWeather) return newWeather;
+            return item;
+          });
+        }
+        return old.concat(weather);
+      });
     });
   }, [cities, props.favourites]);
-
-  const weather = useMemo((): WeatherData[] => {
-    return props.favourites.map((card) => {
-      const data = weatherData.find((item) => card.id === item.id) || null;
-      if (!data) throw new Error('ааааааааа');
-
-      return {
-        city: card,
-        data,
-        condition: data ? weatherApi.getConditionText(data.condition) : '',
-      };
-    });
-  }, [props.favourites, weatherData]);
 
   return (
     <section className="cards">
@@ -88,14 +110,14 @@ const Cards = (props: Props) => {
         ))}
       </div>
       <div className="cards__big-cards">
-        {weather.map(
-          (card) =>
-            ((props.conditions.length === 0 && card.data) ||
-              (props.conditions.includes(card.condition) && card.data)) && (
+        {favouritesData?.map(
+          (item) =>
+            (props.conditions.includes(item.condition) ||
+              props.conditions.length === 0) && (
               <BigCard
-                city={card.city}
-                weather={card?.data}
-                key={card.city.id}
+                city={item.city}
+                weather={item.weather}
+                key={item.city.id}
                 onChangeSelectedCity={props.onChangeSelectedCity}
                 onWantSelectCity={props.onWantSelectCity}
                 selectedCity={props.selectedCity}

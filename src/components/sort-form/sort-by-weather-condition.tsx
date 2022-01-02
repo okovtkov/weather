@@ -4,7 +4,7 @@ import conditions from './conditions';
 import './sort-form.scss';
 
 interface Props {
-  onChangeConditionQuery: (param: string[]) => void;
+  onChangeCondition: (param: string[]) => void;
   conditions: string[];
 }
 
@@ -20,7 +20,7 @@ const SortByWeatherCondition = (props: Props) => {
         conditions.add(condition);
       }
 
-      props.onChangeConditionQuery(Array.from(conditions));
+      props.onChangeCondition(Array.from(conditions));
     },
     [props]
   );
