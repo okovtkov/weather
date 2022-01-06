@@ -1,4 +1,3 @@
-/* eslint-disable no-param-reassign */
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Icon from '../icon/icon';
 import './small-card.scss';
@@ -6,8 +5,9 @@ import { City, Weather } from '../../types';
 
 interface Props {
   city: City;
+  favourites: City[];
   weather?: Weather;
-  onAddFavourite: (city: City) => void;
+  onAddFavourite: (cities: City[]) => void;
 }
 
 interface MouseDownInfo {
@@ -27,6 +27,57 @@ const SmallCard = (props: Props) => {
   });
   const city = useRef<HTMLDivElement>(null);
 
+  const temp = useMemo(() => {
+    const temperature = props.weather?.temp;
+    return temperature && temperature > 0 ? `+${temperature}` : temperature;
+  }, [props.weather]);
+
+  const getTarget = useCallback((e) => {
+    const target = document.elementFromPoint(
+      e.clientX,
+      e.clientY
+    ) as HTMLElement;
+    if (!target) return null;
+    return target;
+  }, []);
+
+  const createEmptyCard = useCallback((target) => {
+    const favourite = target.closest('.big-card');
+    const newEmpty = document.createElement('div');
+    const oldEmpty = document.querySelector('.big-card--empty');
+    newEmpty.classList.add('big-card--empty');
+
+    if (target.closest('.big-card__header')) favourite.before(newEmpty);
+    if (target.closest('.big-card__content')) favourite.after(newEmpty);
+    if (target.classList.contains('big-card--empty')) return;
+    if (
+      target.classList.contains('cards__big-cards') ||
+      target.classList.contains('cards__help')
+    ) {
+      const container = document.querySelector('.cards__big-cards');
+      container?.append(newEmpty);
+    }
+
+    if (oldEmpty) oldEmpty.remove();
+  }, []);
+
+  const addFavourite = useCallback(() => {
+    const childrens = document.querySelector('.cards__big-cards')?.children;
+    const empty = document.querySelector('.big-card--empty');
+    if (!childrens || !empty) return;
+    const cards = Array.from(childrens);
+    const index = cards.findIndex((item) =>
+      item.classList.contains('big-card--empty')
+    );
+    if (props.favourites.length === 0) props.onAddFavourite([props.city]);
+    else {
+      const favourites = [...props.favourites];
+      favourites.splice(index, 0, props.city);
+      props.onAddFavourite(favourites);
+    }
+    empty?.remove();
+  }, [props]);
+
   const mouseMoveHandler = useCallback(
     (e) => {
       if (!draggable) return;
@@ -36,26 +87,35 @@ const SmallCard = (props: Props) => {
       draggable.style.top = `${
         mouseDownInfo.startTop + (e.pageY - mouseDownInfo.startY)
       }px`;
+
+      draggable.style.visibility = 'hidden';
+      const target = getTarget(e);
+      if (!target) return;
+      createEmptyCard(target);
+      draggable.style.visibility = 'visible';
     },
-    [draggable, mouseDownInfo]
+    [draggable, getTarget, mouseDownInfo, createEmptyCard]
   );
 
   const mouseDownHandler = useCallback((event) => {
     const obj = city.current;
-    if (!obj) return;
+    const container = document.querySelector('.cards__small-cards');
+    if (!obj || !container) return;
 
-    if (document.querySelector('.small-card_active')) return;
     const clone = obj.cloneNode(true) as HTMLElement;
-    obj.classList.add('small-card_draggable');
     obj.after(clone);
     clone.classList.add('small-card_active');
-    setDraggable(obj);
+    obj.classList.add('small-card_draggable');
+    obj.style.top = `${clone.getBoundingClientRect().top + window.scrollY}px`;
+    obj.style.left = `${clone.getBoundingClientRect().left + window.scrollX}px`;
+
     setMouseDownInfo({
       startLeft: obj.offsetLeft,
       startTop: obj.offsetTop,
       startX: event.pageX,
       startY: event.pageY,
     });
+    setDraggable(obj);
   }, []);
 
   useEffect(() => {
@@ -72,13 +132,9 @@ const SmallCard = (props: Props) => {
     draggable.classList.remove('small-card_draggable');
     draggable.style.top = `${mouseDownInfo.startTop}px`;
     draggable.style.left = `${mouseDownInfo.startLeft}px`;
+    addFavourite();
     document.removeEventListener('mousemove', mouseMoveHandler);
-  }, [mouseDownInfo.startLeft, mouseDownInfo.startTop, mouseMoveHandler]);
-
-  const temp = useMemo(() => {
-    const temperature = props.weather?.temp;
-    return temperature && temperature > 0 ? `+${temperature}` : temperature;
-  }, [props.weather]);
+  }, [addFavourite, mouseDownInfo, mouseMoveHandler]);
 
   return (
     <div className="small-card" ref={city}>

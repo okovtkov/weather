@@ -153,10 +153,10 @@
 }
 
 .big-card--empty {
-  pointer-events: none;
   min-height: 172px;
-  background-color: rgba(247, 248, 255, 0.3);
+  background-color: transparent;
   border: 2px dashed var(--color-border);
+  z-index: 8;
 }
 
 .big-card--empty.hidden-block {

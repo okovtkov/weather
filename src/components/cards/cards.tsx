@@ -30,8 +30,8 @@ const Cards = (props: Props) => {
   const [weatherData, setWeatherData] = useState<Weather[]>([]);
 
   const addFavouriteHandler = useCallback(
-    (city: City) => {
-      props.onChangeFavourites([...props.favourites, city]);
+    (cities: City[]) => {
+      props.onChangeFavourites([...cities]);
     },
     [props]
   );
@@ -104,6 +104,7 @@ const Cards = (props: Props) => {
           <SmallCard
             city={city}
             weather={weatherData.find((item) => city.id === item.id)}
+            favourites={props.favourites}
             key={city.id}
             onAddFavourite={addFavouriteHandler}
           />
