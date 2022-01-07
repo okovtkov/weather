@@ -6,6 +6,8 @@ interface Props {
   favourites: City[];
   onAddFavourite: (cities: City[]) => void;
   card: HTMLElement | null;
+  draggable: HTMLElement | null;
+  onChangeDraggable: (param: HTMLElement | null) => void;
 }
 
 interface MouseDownInfo {
@@ -16,7 +18,6 @@ interface MouseDownInfo {
 }
 
 export default function useDragNDrop(props: Props) {
-  const [draggable, setDraggable] = useState<HTMLElement | null>(null);
   const [mouseDownInfo, setMouseDownInfo] = useState<MouseDownInfo>({
     startLeft: 0,
     startTop: 0,
@@ -73,21 +74,22 @@ export default function useDragNDrop(props: Props) {
 
   const mouseMoveHandler = useCallback(
     (e) => {
-      if (!draggable) return;
-      draggable.style.left = `${
+      const { card } = props;
+      if (!card || card !== props.draggable) return;
+      card.style.left = `${
         mouseDownInfo.startLeft + (e.pageX - mouseDownInfo.startX)
       }px`;
-      draggable.style.top = `${
+      card.style.top = `${
         mouseDownInfo.startTop + (e.pageY - mouseDownInfo.startY)
       }px`;
 
-      draggable.style.visibility = 'hidden';
+      card.style.visibility = 'hidden';
       const target = getTarget(e);
       if (!target) return;
       createEmptyCard(target);
-      draggable.style.visibility = 'visible';
+      card.style.visibility = 'visible';
     },
-    [draggable, getTarget, mouseDownInfo, createEmptyCard]
+    [props, mouseDownInfo, getTarget, createEmptyCard]
   );
 
   const mouseDownHandler = useCallback(
@@ -111,9 +113,9 @@ export default function useDragNDrop(props: Props) {
         startX: event.pageX,
         startY: event.pageY,
       });
-      setDraggable(obj);
+      props.onChangeDraggable(obj);
     },
-    [props.card]
+    [props]
   );
 
   const mouseUpHandler = useCallback(() => {
@@ -127,14 +129,8 @@ export default function useDragNDrop(props: Props) {
     draggable.style.top = `${mouseDownInfo.startTop}px`;
     draggable.style.left = `${mouseDownInfo.startLeft}px`;
     addFavourite();
-    document.removeEventListener('mousemove', mouseMoveHandler);
-  }, [
-    addFavourite,
-    mouseDownInfo.startLeft,
-    mouseDownInfo.startTop,
-    mouseMoveHandler,
-    props.card,
-  ]);
+    props.onChangeDraggable(null);
+  }, [addFavourite, mouseDownInfo.startLeft, mouseDownInfo.startTop, props]);
 
   useEffect(() => {
     props.card?.addEventListener('mousedown', mouseDownHandler);
@@ -143,10 +139,12 @@ export default function useDragNDrop(props: Props) {
     return () => {
       props.card?.removeEventListener('mousedown', mouseDownHandler);
       props.card?.removeEventListener('mouseup', mouseUpHandler);
+      document.removeEventListener('mousemove', mouseMoveHandler);
     };
-  }, [mouseDownHandler, mouseUpHandler, props.card]);
+  }, [mouseDownHandler, mouseMoveHandler, mouseUpHandler, props, props.card]);
 
   useEffect(() => {
-    if (draggable) document.addEventListener('mousemove', mouseMoveHandler);
-  }, [draggable, mouseMoveHandler]);
+    if (props.draggable)
+      document.addEventListener('mousemove', mouseMoveHandler);
+  }, [props.draggable, mouseMoveHandler]);
 }

@@ -27,6 +27,7 @@ interface FavouritesData {
 }
 
 const Cards = (props: Props) => {
+  const [draggable, setDraggable] = useState<HTMLElement | null>(null);
   const [weatherData, setWeatherData] = useState<Weather[]>([]);
 
   const addFavouriteHandler = useCallback(
@@ -102,6 +103,8 @@ const Cards = (props: Props) => {
       <div className="cards__small-cards">
         {cities.map((city: City) => (
           <SmallCard
+            draggable={draggable}
+            onChangeDraggable={setDraggable}
             city={city}
             weather={weatherData.find((item) => city.id === item.id)}
             favourites={props.favourites}

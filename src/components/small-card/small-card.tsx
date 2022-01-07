@@ -1,4 +1,5 @@
 import { useMemo, useRef } from 'react';
+import classNames from 'classnames';
 import useDragNDrop from '../../hooks/dragNdrop';
 import Icon from '../icon/icon';
 import './small-card.scss';
@@ -6,6 +7,8 @@ import { City, Weather } from '../../types';
 
 interface Props {
   city: City;
+  draggable: HTMLElement | null;
+  onChangeDraggable: (param: HTMLElement | null) => void;
   favourites: City[];
   weather?: Weather;
   onAddFavourite: (cities: City[]) => void;
@@ -14,6 +17,8 @@ interface Props {
 const SmallCard = (props: Props) => {
   const card = useRef<HTMLDivElement>(null);
   useDragNDrop({
+    draggable: props.draggable,
+    onChangeDraggable: props.onChangeDraggable,
     city: props.city,
     favourites: props.favourites,
     onAddFavourite: props.onAddFavourite,
@@ -26,7 +31,12 @@ const SmallCard = (props: Props) => {
   }, [props.weather]);
 
   return (
-    <div className="small-card" ref={card}>
+    <div
+      className={classNames('small-card', {
+        'small-card_draggable': props.draggable === card.current,
+      })}
+      ref={card}
+    >
       <span className="small-card__city">{props.city.name}</span>
       <span className="small-card__temperature">{temp}°</span>
       <Icon name="strips-small" />
