@@ -61,8 +61,9 @@ export default function useDragNDrop(props: Props) {
     const index = cards.findIndex((item) =>
       item.classList.contains('big-card--empty')
     );
-    if (props.favourites.length === 0) props.onAddFavourite([props.city]);
-    else {
+    if (props.favourites.length === 0) {
+      props.onAddFavourite([props.city]);
+    } else {
       const favourites = [...props.favourites];
       favourites.splice(index, 0, props.city);
       props.onAddFavourite(favourites);
@@ -138,12 +139,14 @@ export default function useDragNDrop(props: Props) {
   useEffect(() => {
     props.card?.addEventListener('mousedown', mouseDownHandler);
     props.card?.addEventListener('mouseup', mouseUpHandler);
+
+    return () => {
+      props.card?.removeEventListener('mousedown', mouseDownHandler);
+      props.card?.removeEventListener('mouseup', mouseUpHandler);
+    };
+  }, [mouseDownHandler, mouseUpHandler, props.card]);
+
+  useEffect(() => {
     if (draggable) document.addEventListener('mousemove', mouseMoveHandler);
-  }, [
-    draggable,
-    mouseDownHandler,
-    mouseMoveHandler,
-    mouseUpHandler,
-    props.card,
-  ]);
+  }, [draggable, mouseMoveHandler]);
 }
