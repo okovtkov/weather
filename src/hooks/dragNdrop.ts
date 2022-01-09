@@ -121,21 +121,8 @@ export default function useDragNDrop(props: Props) {
       const { card } = props;
       if (!card || card !== props.draggable) return;
 
-      if (props.type === 'small-card') {
-        card.style.left = `${
-          mouseDownInfo.startLeft + (e.pageX - mouseDownInfo.startX)
-        }px`;
-        card.style.top = `${
-          mouseDownInfo.startTop + (e.pageY - mouseDownInfo.startY)
-        }px`;
-      } else {
-        card.style.left = `${
-          mouseDownInfo.startLeft + (e.pageX - mouseDownInfo.startX)
-        }px`;
-        card.style.top = `${
-          e.pageY - mouseDownInfo.startY + mouseDownInfo.startTop
-        }px`;
-      }
+      card.style.left = `${mouseDownInfo.startLeft + (e.pageX - mouseDownInfo.startX)}px`;
+      card.style.top = `${mouseDownInfo.startTop + (e.pageY - mouseDownInfo.startY)}px`;
       const target = checkElementFromPoint(e);
       createEmptyCard(target);
     },
