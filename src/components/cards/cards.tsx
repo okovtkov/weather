@@ -30,7 +30,7 @@ const Cards = (props: Props) => {
   const [draggable, setDraggable] = useState<HTMLElement | null>(null);
   const [weatherData, setWeatherData] = useState<Weather[]>([]);
 
-  const addFavouriteHandler = useCallback(
+  const changeFavouritesHandler = useCallback(
     (cities: City[]) => {
       props.onChangeFavourites([...cities]);
     },
@@ -109,7 +109,7 @@ const Cards = (props: Props) => {
             weather={weatherData.find((item) => city.id === item.id)}
             favourites={props.favourites}
             key={city.id}
-            onAddFavourite={addFavouriteHandler}
+            onChangeFavourites={changeFavouritesHandler}
           />
         ))}
       </div>
@@ -120,8 +120,12 @@ const Cards = (props: Props) => {
               props.conditions.length === 0) && (
               <BigCard
                 city={item.city}
+                favourites={props.favourites}
+                draggable={draggable}
+                onChangeDraggable={setDraggable}
                 weather={item.weather}
                 key={item.city.id}
+                onChangeFavourites={changeFavouritesHandler}
                 onChangeSelectedCity={props.onChangeSelectedCity}
                 onWantSelectCity={props.onWantSelectCity}
                 selectedCity={props.selectedCity}

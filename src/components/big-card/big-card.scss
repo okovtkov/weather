@@ -12,6 +12,11 @@
   transition: filter var(--transition-base);
 }
 
+.big-card_draggable {
+  position: absolute;
+  z-index: 9;
+}
+
 .big-card__header {
   display: flex;
   align-items: center;

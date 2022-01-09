@@ -29,10 +29,14 @@
   width: calc(50% - 2px);
   height: 100%;
   padding-bottom: 100px;
-  overflow-y: auto;
+  overflow: scroll;
 
   -ms-overflow-style: none;
   scrollbar-width: none;
+}
+
+.cards__big-cards_visible {
+  overflow: visible;
 }
 
 .cards__big-cards::-webkit-scrollbar {

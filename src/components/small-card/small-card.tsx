@@ -11,7 +11,7 @@ interface Props {
   onChangeDraggable: (param: HTMLElement | null) => void;
   favourites: City[];
   weather?: Weather;
-  onAddFavourite: (cities: City[]) => void;
+  onChangeFavourites: (cities: City[]) => void;
 }
 
 const SmallCard = (props: Props) => {
@@ -21,8 +21,9 @@ const SmallCard = (props: Props) => {
     onChangeDraggable: props.onChangeDraggable,
     city: props.city,
     favourites: props.favourites,
-    onAddFavourite: props.onAddFavourite,
+    onChangeFavourites: props.onChangeFavourites,
     card: card.current,
+    type: 'small-card',
   });
 
   const temp = useMemo(() => {
