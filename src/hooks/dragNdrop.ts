@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { useCallback, useEffect, useLayoutEffect, useState } from 'react';
 import { City } from '../types';
 
@@ -101,64 +102,61 @@ export default function useDragNDrop(props: Props) {
     empty?.remove();
   }, [addToArray, changeArray, props.type]);
 
-  const checkElementFromPoint = useCallback(
-    (e) => {
-      const { card } = props;
-      if (!card) return null;
-      card.style.visibility = 'hidden';
-      const target = document.elementFromPoint(
-        e.clientX,
-        e.clientY
-      ) as HTMLElement;
-      card.style.visibility = 'visible';
-      return target;
-    },
-    [props]
-  );
+  const checkElementFromPoint = useCallback((e) => {
+    const { card } = props;
+    if (!card) return null;
+    card.style.visibility = 'hidden';
+    const target = document.elementFromPoint(e.clientX, e.clientY) as HTMLElement;
+    card.style.visibility = 'visible';
+    return target;
+  }, [props]);
 
   const mouseMoveHandler = useCallback(
     (e) => {
       const { card } = props;
-      if (!card || card !== props.draggable) return;
+      if (!card || card !== props.draggable || !favouritesContainer) return;
 
-      card.style.left = `${mouseDownInfo.startLeft + (e.pageX - mouseDownInfo.startX)}px`;
-      card.style.top = `${mouseDownInfo.startTop + (e.pageY - mouseDownInfo.startY)}px`;
+      card.style.left = `${mouseDownInfo.startLeft + (e.clientX - mouseDownInfo.startX)}px`;
+      card.style.top = `${mouseDownInfo.startTop + (e.clientY - mouseDownInfo.startY)}px`;
       const target = checkElementFromPoint(e);
       createEmptyCard(target);
     },
-    [props, checkElementFromPoint, createEmptyCard, mouseDownInfo]
+    [
+      props,
+      favouritesContainer,
+      mouseDownInfo,
+      checkElementFromPoint,
+      createEmptyCard,
+    ]
   );
 
   const mouseDownHandler = useCallback(
     (event) => {
       const obj = props.card;
-
       if (!favouritesContainer || !obj) return;
-      // favouritesContainer.classList.add('cards__big-cards_visible');
 
       if (props.type === 'small-card') {
         const clone = obj.cloneNode(true) as HTMLElement;
         obj.after(clone);
         clone.classList.add(`${props.type}_active`);
-        obj.classList.add(`${props.type}_draggable`);
-        obj.style.top = `${clone.getBoundingClientRect().top + window.scrollY}px`;
-        obj.style.left = `${clone.getBoundingClientRect().left + window.scrollX}px`;
-      } else {
-        const y = favouritesContainer.scrollTop;
-        obj.classList.add(`${props.type}_draggable`);
-        obj.style.top = `${obj.offsetTop}px`;
-        obj.style.left = `${obj.offsetLeft}px`;
+      }
 
+      const y = obj.getBoundingClientRect().top;
+      const x = obj.getBoundingClientRect().left;
+      obj.classList.add(`${props.type}_draggable`);
+      obj.style.top = `${y}px`;
+      obj.style.left = `${x}px`;
+
+      if (props.type === 'big-card') {
         const target = checkElementFromPoint(event);
         createEmptyCard(target);
-        favouritesContainer.scrollTo(0, y);
       }
 
       setMouseDownInfo({
-        startLeft: obj.offsetLeft,
-        startTop: obj.offsetTop,
-        startX: event.pageX,
-        startY: event.pageY,
+        startLeft: obj.getBoundingClientRect().left,
+        startTop: obj.getBoundingClientRect().top,
+        startX: event.clientX,
+        startY: event.clientY,
       });
       props.onChangeDraggable(obj);
     },
@@ -167,7 +165,6 @@ export default function useDragNDrop(props: Props) {
 
   const mouseUpHandler = useCallback(
     (event) => {
-      // favouritesContainer?.classList.remove('cards__big-cards_visible');
       const clone = document.querySelector('.small-card_active');
       clone?.remove();
 
@@ -189,7 +186,6 @@ export default function useDragNDrop(props: Props) {
       changeFavourite,
       checkElementFromPoint,
       deleteFavourite,
-      favouritesContainer?.classList,
       mouseDownInfo.startLeft,
       mouseDownInfo.startTop,
       props,
@@ -208,14 +204,12 @@ export default function useDragNDrop(props: Props) {
   }, [mouseDownHandler, mouseMoveHandler, mouseUpHandler, props.card]);
 
   useLayoutEffect(() => {
-    const container = document.querySelector(
-      '.cards__big-cards'
-    ) as HTMLElement;
+    const container = document.querySelector('.cards__big-cards') as HTMLElement;
     setFavouritesContainer(container);
   }, []);
 
   useEffect(() => {
-    if (props.draggable)
+    if (props.draggable === props.card)
       document.addEventListener('mousemove', mouseMoveHandler);
-  }, [props.draggable, mouseMoveHandler]);
+  }, [props.draggable, mouseMoveHandler, props.card]);
 }
