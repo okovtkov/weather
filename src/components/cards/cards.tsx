@@ -58,6 +58,7 @@ const Cards = (props: Props) => {
     if (weatherData.length < props.cities.length + 1) return [];
     return props.favourites.map((city) => {
       const weather = weatherData.find((item) => item.id === city.id);
+      console.log(weather, 'weather', weatherData, 'weatherData')
       if (!weather) throw new Error('что-то не то');
 
       const condition = utils.getConditionText(weather.condition);
@@ -66,7 +67,7 @@ const Cards = (props: Props) => {
   }, [props.cities.length, props.favourites, weatherData]);
 
   useEffect(() => {
-    const time = 1000 * 3600;
+    const time = 1000 * 10;
 
     weatherApi.current(cities, { cacheMs: time }).then((weather) => {
       setWeatherData((old) => {
