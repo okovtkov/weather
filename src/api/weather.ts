@@ -23,7 +23,17 @@ const weatherApi = {
     if (!options?.cacheMs) {
       return Promise.all(
         cities.map((city) => this.cityWeather(city).then((resp) => resp))
-      );
+      ).then((resp) => {
+        const cachedWeather = localStorage.getItem('weather')
+          ? localStorage.getItem('weather')
+          : null;
+        if (cachedWeather) {
+          const weatherParse = JSON.parse(cachedWeather);
+          const weather = [...weatherParse, ...resp];
+          localStorage.setItem('weather', JSON.stringify(weather));
+        }
+        return resp;
+      });
     }
 
     return Promise.all(cities.map((city) => this.cityWeather(city))).then(
