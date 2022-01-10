@@ -1,23 +1,39 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/mouse-events-have-key-events */
-import { useCallback, useMemo } from 'react';
+import { useCallback, useMemo, useRef } from 'react';
 import classNames from 'classnames';
 import Icon from '../icon/icon';
 import { City, Weather } from '../../types';
 import utils from '../../utils';
 import './big-card.scss';
+import useDragNDrop from '../../hooks/dragNdrop';
 
 interface Props {
   city: City;
   weather?: Weather;
+  favourites: City[];
   selectedCity: City | null;
   desiredCity: City | null;
+  draggable: HTMLElement | null;
+  onChangeFavourites: (params: City[]) => void;
   onChangeSelectedCity: (city: City | null) => void;
   onWantSelectCity: (city: City | null) => void;
+  onChangeDraggable: (param: HTMLElement | null) => void;
 }
 
 const BigCard = (props: Props) => {
+  const card = useRef(null);
+  useDragNDrop({
+    draggable: props.draggable,
+    onChangeDraggable: props.onChangeDraggable,
+    onChangeFavourites: props.onChangeFavourites,
+    city: props.city,
+    card: card.current,
+    favourites: props.favourites,
+    type: 'big-card',
+  });
+
   const removeWantedCityHandler = useCallback(() => {
     props.onWantSelectCity(null);
   }, [props]);
@@ -37,9 +53,12 @@ const BigCard = (props: Props) => {
 
   return (
     <div
+      ref={card}
       className={classNames('big-card', {
         'big-card_selected': props.selectedCity?.id === props.city.id,
         'big-card_desired': props.desiredCity?.id === props.city.id,
+        'big-card_draggable':
+          props.draggable === card.current && props.draggable !== null,
       })}
       onMouseEnter={changeWantedCityHandler}
       onMouseLeave={removeWantedCityHandler}

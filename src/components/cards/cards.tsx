@@ -27,11 +27,12 @@ interface FavouritesData {
 }
 
 const Cards = (props: Props) => {
+  const [draggable, setDraggable] = useState<HTMLElement | null>(null);
   const [weatherData, setWeatherData] = useState<Weather[]>([]);
 
-  const addFavouriteHandler = useCallback(
-    (city: City) => {
-      props.onChangeFavourites([...props.favourites, city]);
+  const changeFavouritesHandler = useCallback(
+    (cities: City[]) => {
+      props.onChangeFavourites([...cities]);
     },
     [props]
   );
@@ -102,10 +103,13 @@ const Cards = (props: Props) => {
       <div className="cards__small-cards">
         {cities.map((city: City) => (
           <SmallCard
+            draggable={draggable}
+            onChangeDraggable={setDraggable}
             city={city}
             weather={weatherData.find((item) => city.id === item.id)}
+            favourites={props.favourites}
             key={city.id}
-            onAddFavourite={addFavouriteHandler}
+            onChangeFavourites={changeFavouritesHandler}
           />
         ))}
       </div>
@@ -116,8 +120,12 @@ const Cards = (props: Props) => {
               props.conditions.length === 0) && (
               <BigCard
                 city={item.city}
+                favourites={props.favourites}
+                draggable={draggable}
+                onChangeDraggable={setDraggable}
                 weather={item.weather}
                 key={item.city.id}
+                onChangeFavourites={changeFavouritesHandler}
                 onChangeSelectedCity={props.onChangeSelectedCity}
                 onWantSelectCity={props.onWantSelectCity}
                 selectedCity={props.selectedCity}

@@ -21,6 +21,16 @@
   color: var(--color-text-white);
 }
 
+.small-card_draggable {
+  position: fixed;
+  z-index: 9;
+}
+
+.small-card_active {
+  background-color: var(--color-blue-hover-content);
+  color: white;
+}
+
 .small-card__city {
   flex-grow: 1;
   margin-right: 20px;
