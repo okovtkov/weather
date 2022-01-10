@@ -58,7 +58,6 @@ const Cards = (props: Props) => {
     if (weatherData.length < props.cities.length + 1) return [];
     return props.favourites.map((city) => {
       const weather = weatherData.find((item) => item.id === city.id);
-      console.log(weather, 'weather', weatherData, 'weatherData')
       if (!weather) throw new Error('что-то не то');
 
       const condition = utils.getConditionText(weather.condition);
