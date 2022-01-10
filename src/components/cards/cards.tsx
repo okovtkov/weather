@@ -66,7 +66,7 @@ const Cards = (props: Props) => {
   }, [props.cities.length, props.favourites, weatherData]);
 
   useEffect(() => {
-    const time = 1000 * 10;
+    const time = 1000 * 3600;
 
     weatherApi.current(cities, { cacheMs: time }).then((weather) => {
       setWeatherData((old) => {
