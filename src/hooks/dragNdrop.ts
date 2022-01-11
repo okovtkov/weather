@@ -193,15 +193,17 @@ export default function useDragNDrop(props: Props) {
   );
 
   useEffect(() => {
-    props.card?.addEventListener('mousedown', mouseDownHandler);
-    props.card?.addEventListener('mouseup', mouseUpHandler);
+    const { card } = props;
+    const draggableElem = props.type === 'big-card' ? card?.querySelector('.big-card__header') : card;
+    draggableElem?.addEventListener('mousedown', mouseDownHandler);
+    draggableElem?.addEventListener('mouseup', mouseUpHandler);
 
     return () => {
-      props.card?.removeEventListener('mousedown', mouseDownHandler);
-      props.card?.removeEventListener('mouseup', mouseUpHandler);
+      draggableElem?.removeEventListener('mousedown', mouseDownHandler);
+      draggableElem?.removeEventListener('mouseup', mouseUpHandler);
       document.removeEventListener('mousemove', mouseMoveHandler);
     };
-  }, [mouseDownHandler, mouseMoveHandler, mouseUpHandler, props.card]);
+  }, [mouseDownHandler, mouseMoveHandler, mouseUpHandler, props]);
 
   useLayoutEffect(() => {
     const container = document.querySelector('.cards__big-cards') as HTMLElement;
