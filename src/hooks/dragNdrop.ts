@@ -130,8 +130,15 @@ export default function useDragNDrop(props: Props) {
     ]
   );
 
+  const deleteActive = useCallback(
+    () => {
+      const clone = document.querySelector('.small-card_active');
+      clone?.remove();
+  }, []);
+
   const mouseDownHandler = useCallback(
     (event) => {
+      deleteActive();
       const obj = props.card;
       if (!favouritesContainer || !obj) return;
 
@@ -160,14 +167,12 @@ export default function useDragNDrop(props: Props) {
       });
       props.onChangeDraggable(obj);
     },
-    [checkElementFromPoint, createEmptyCard, favouritesContainer, props]
+    [checkElementFromPoint, createEmptyCard, deleteActive, favouritesContainer, props]
   );
 
   const mouseUpHandler = useCallback(
     (event) => {
-      const clone = document.querySelector('.small-card_active');
-      clone?.remove();
-
+      deleteActive();
       const draggable = props.card;
       if (!draggable) return;
 
@@ -182,14 +187,7 @@ export default function useDragNDrop(props: Props) {
       if (!target) return;
       if (target.closest('.cards__small-cards')) deleteFavourite();
     },
-    [
-      changeFavourite,
-      checkElementFromPoint,
-      deleteFavourite,
-      mouseDownInfo.startLeft,
-      mouseDownInfo.startTop,
-      props,
-    ]
+    [changeFavourite, checkElementFromPoint, deleteActive, deleteFavourite, mouseDownInfo.startLeft, mouseDownInfo.startTop, props]
   );
 
   useEffect(() => {
