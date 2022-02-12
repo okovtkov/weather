@@ -55,6 +55,7 @@
 .cards__big-cards {
   position: relative;
   z-index: 1;
+  scroll-behavior: smooth;
 }
 
 .cards__help {

@@ -136,6 +136,12 @@ export default function useDragNDrop(props: Props) {
       clone?.remove();
   }, []);
 
+  const wheelHandler = useCallback((e) => {
+    const container = document.querySelector('.cards__big-cards');
+    if (!container) return;
+    container.scrollTop += e.deltaY;
+  }, []);
+
   const mouseDownHandler = useCallback(
     (event) => {
       deleteActive();
@@ -166,8 +172,9 @@ export default function useDragNDrop(props: Props) {
         startY: event.clientY,
       });
       props.onChangeDraggable(obj);
+      document.addEventListener('wheel', wheelHandler);
     },
-    [checkElementFromPoint, createEmptyCard, deleteActive, favouritesContainer, props]
+    [checkElementFromPoint, createEmptyCard, deleteActive, favouritesContainer, props, wheelHandler]
   );
 
   const mouseUpHandler = useCallback(
@@ -181,13 +188,23 @@ export default function useDragNDrop(props: Props) {
       draggable.style.left = `${mouseDownInfo.startLeft}px`;
       changeFavourite();
       props.onChangeDraggable(null);
+      document.removeEventListener('wheel', wheelHandler);
 
       if (props.type === 'small-card') return;
       const target = checkElementFromPoint(event);
       if (!target) return;
       if (target.closest('.cards__small-cards')) deleteFavourite();
     },
-    [changeFavourite, checkElementFromPoint, deleteActive, deleteFavourite, mouseDownInfo.startLeft, mouseDownInfo.startTop, props]
+    [
+      changeFavourite,
+      checkElementFromPoint,
+      deleteActive,
+      deleteFavourite,
+      mouseDownInfo.startLeft,
+      mouseDownInfo.startTop,
+      props,
+      wheelHandler
+    ]
   );
 
   useEffect(() => {
@@ -195,21 +212,18 @@ export default function useDragNDrop(props: Props) {
     const draggableElem = props.type === 'big-card' ? card?.querySelector('.big-card__header') : card;
     draggableElem?.addEventListener('mousedown', mouseDownHandler);
     draggableElem?.addEventListener('mouseup', mouseUpHandler);
+    if (props.draggable === props.card)
+      document.addEventListener('mousemove', mouseMoveHandler);
 
     return () => {
       draggableElem?.removeEventListener('mousedown', mouseDownHandler);
       draggableElem?.removeEventListener('mouseup', mouseUpHandler);
       document.removeEventListener('mousemove', mouseMoveHandler);
     };
-  }, [mouseDownHandler, mouseMoveHandler, mouseUpHandler, props]);
+  }, [mouseDownHandler, mouseMoveHandler, mouseUpHandler, props, wheelHandler]);
 
   useLayoutEffect(() => {
     const container = document.querySelector('.cards__big-cards') as HTMLElement;
     setFavouritesContainer(container);
   }, []);
-
-  useEffect(() => {
-    if (props.draggable === props.card)
-      document.addEventListener('mousemove', mouseMoveHandler);
-  }, [props.draggable, mouseMoveHandler, props.card]);
 }
