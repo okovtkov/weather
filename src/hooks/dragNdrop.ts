@@ -132,7 +132,17 @@ export default function useDragNDrop(props: Props) {
       }
       createEmptyCard(target);
     },
-    [props, favouritesContainer, mouseDownInfo.startLeft, mouseDownInfo.startX, mouseDownInfo.startTop, mouseDownInfo.startY, checkElementFromPoint, createEmptyCard, wheelHandler]
+    [
+      props,
+      favouritesContainer,
+      mouseDownInfo.startLeft,
+      mouseDownInfo.startX,
+      mouseDownInfo.startTop,
+      mouseDownInfo.startY,
+      checkElementFromPoint,
+      createEmptyCard,
+      wheelHandler
+    ]
   );
 
   const deleteActive = useCallback(
@@ -140,40 +150,6 @@ export default function useDragNDrop(props: Props) {
       const clone = document.querySelector('.small-card_active');
       clone?.remove();
   }, []);
-
-  const mouseDownHandler = useCallback(
-    (event) => {
-      deleteActive();
-      const obj = props.card;
-      if (!favouritesContainer || !obj) return;
-
-      if (props.type === 'small-card') {
-        const clone = obj.cloneNode(true) as HTMLElement;
-        obj.after(clone);
-        clone.classList.add(`${props.type}_active`);
-      }
-
-      const y = obj.getBoundingClientRect().top;
-      const x = obj.getBoundingClientRect().left;
-      obj.classList.add(`${props.type}_draggable`);
-      obj.style.top = `${y}px`;
-      obj.style.left = `${x}px`;
-
-      if (props.type === 'big-card') {
-        const target = checkElementFromPoint(event);
-        createEmptyCard(target);
-      }
-
-      setMouseDownInfo({
-        startLeft: obj.getBoundingClientRect().left,
-        startTop: obj.getBoundingClientRect().top,
-        startX: event.clientX,
-        startY: event.clientY,
-      });
-      props.onChangeDraggable(obj);
-    },
-    [checkElementFromPoint, createEmptyCard, deleteActive, favouritesContainer, props]
-  );
 
   const mouseUpHandler = useCallback(
     (event) => {
@@ -205,6 +181,58 @@ export default function useDragNDrop(props: Props) {
     ]
   );
 
+  const contextMenuHandler = useCallback((event) => {
+    mouseUpHandler(event);
+    document.removeEventListener('contextmenu', contextMenuHandler);
+  }, [mouseUpHandler]);
+
+  const checkForBugs = useCallback((event) => {
+    let presenceOfBugs = false;
+    document.addEventListener('contextmenu', contextMenuHandler);
+    const isDraggableElem = event.target.closest('.small-card_draggable')
+      || event.target.closest('.big-card_draggable');
+    if (isDraggableElem) {
+      mouseUpHandler(event);
+      presenceOfBugs = true;
+    }
+    return presenceOfBugs;
+  }, [contextMenuHandler, mouseUpHandler]);
+
+  const mouseDownHandler = useCallback(
+    (event) => {
+      deleteActive();
+      if (checkForBugs(event)) return;
+      const obj = props.card;
+      if (!favouritesContainer || !obj) return;
+
+      if (props.type === 'small-card') {
+        const clone = obj.cloneNode(true) as HTMLElement;
+        obj.after(clone);
+        clone.classList.add(`${props.type}_active`);
+      }
+
+      const y = obj.getBoundingClientRect().top;
+      const x = obj.getBoundingClientRect().left;
+      obj.classList.add(`${props.type}_draggable`);
+      obj.style.top = `${y}px`;
+      obj.style.left = `${x}px`;
+
+      if (props.type === 'big-card') {
+        const target = checkElementFromPoint(event);
+        createEmptyCard(target);
+      }
+
+      setMouseDownInfo({
+        startLeft: obj.getBoundingClientRect().left,
+        startTop: obj.getBoundingClientRect().top,
+        startX: event.clientX,
+        startY: event.clientY,
+      });
+      props.onChangeDraggable(obj);
+    },
+    [checkElementFromPoint, checkForBugs, createEmptyCard, deleteActive, favouritesContainer, props]
+  );
+
   useEffect(() => {
     const { card } = props;
     const draggableElem = props.type === 'big-card' ? card?.querySelector('.big-card__header') : card;
@@ -218,7 +246,7 @@ export default function useDragNDrop(props: Props) {
       draggableElem?.removeEventListener('mouseup', mouseUpHandler);
       document.removeEventListener('mousemove', mouseMoveHandler);
     };
-  }, [mouseDownHandler, mouseMoveHandler, mouseUpHandler, props, wheelHandler]);
+  }, [contextMenuHandler, mouseDownHandler, mouseMoveHandler, mouseUpHandler, props, wheelHandler]);
 
   useLayoutEffect(() => {
     const container = document.querySelector('.cards__big-cards') as HTMLElement;
