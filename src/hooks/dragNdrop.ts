@@ -111,6 +111,12 @@ export default function useDragNDrop(props: Props) {
     return target;
   }, [props]);
 
+  const wheelHandler = useCallback((e) => {
+    const container = document.querySelector('.cards__big-cards');
+    if (!container) return;
+    container.scrollTop += e.deltaY;
+  }, []);
+
   const mouseMoveHandler = useCallback(
     (e) => {
       const { card } = props;
@@ -119,27 +125,20 @@ export default function useDragNDrop(props: Props) {
       card.style.left = `${mouseDownInfo.startLeft + (e.clientX - mouseDownInfo.startX)}px`;
       card.style.top = `${mouseDownInfo.startTop + (e.clientY - mouseDownInfo.startY)}px`;
       const target = checkElementFromPoint(e);
+      if (target?.closest('.cards__big-cards')) {
+        document.addEventListener('wheel', wheelHandler);
+      } else {
+        document.removeEventListener('wheel', wheelHandler);
+      }
       createEmptyCard(target);
     },
-    [
-      props,
-      favouritesContainer,
-      mouseDownInfo,
-      checkElementFromPoint,
-      createEmptyCard,
-    ]
+    [props, favouritesContainer, mouseDownInfo.startLeft, mouseDownInfo.startX, mouseDownInfo.startTop, mouseDownInfo.startY, checkElementFromPoint, createEmptyCard, wheelHandler]
   );
 
   const deleteActive = useCallback(
     () => {
       const clone = document.querySelector('.small-card_active');
       clone?.remove();
-  }, []);
-
-  const wheelHandler = useCallback((e) => {
-    const container = document.querySelector('.cards__big-cards');
-    if (!container) return;
-    container.scrollTop += e.deltaY;
   }, []);
 
   const mouseDownHandler = useCallback(
@@ -172,9 +171,8 @@ export default function useDragNDrop(props: Props) {
         startY: event.clientY,
       });
       props.onChangeDraggable(obj);
-      document.addEventListener('wheel', wheelHandler);
     },
-    [checkElementFromPoint, createEmptyCard, deleteActive, favouritesContainer, props, wheelHandler]
+    [checkElementFromPoint, createEmptyCard, deleteActive, favouritesContainer, props]
   );
 
   const mouseUpHandler = useCallback(
