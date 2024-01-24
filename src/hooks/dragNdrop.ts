@@ -182,12 +182,14 @@ export default function useDragNDrop(props: Props) {
   );
 
   const contextMenuHandler = useCallback((event) => {
-    mouseUpHandler(event);
+    event.preventDefault();
+    // mouseUpHandler(event);
     document.removeEventListener('contextmenu', contextMenuHandler);
-  }, [mouseUpHandler]);
+  }, []);
 
   const checkForBugs = useCallback((event) => {
     let presenceOfBugs = false;
+    const kek_puk = 'kek';
     document.addEventListener('contextmenu', contextMenuHandler);
     const isDraggableElem = event.target.closest('.small-card_draggable')
       || event.target.closest('.big-card_draggable');

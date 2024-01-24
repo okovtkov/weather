@@ -25,19 +25,20 @@ settings:
     '@typescript-eslint/parser': ['.ts', '.tsx']
   import/resolver:
     typescript: {}
-rules: {
-  arrow-body-style: 'off',
-  import/extensions: ['error', 'ignorePackages', {
-    ts: 'never',
-    tsx: 'never'
-  }],
-  jsx-a11y/label-has-associated-control: ['error', { assert: 'either' }],
-  prettier/prettier: 'warn',
-  react/destructuring-assignment: ['error', 'never'],
-  react/function-component-definition: ['error', { namedComponents: 'arrow-function' }],
-  react/jsx-filename-extension: ['error', { extensions: ['.ts', '.tsx'] }],
-  react/prop-types: 'off',
-  react/react-in-jsx-scope: 'off',
-  react/require-default-props: 'off',
-  no-shadow: 'off'
-}
+rules:
+  {
+    arrow-body-style: 'off',
+    import/extensions:
+      ['error', 'ignorePackages', { ts: 'never', tsx: 'never' }],
+    jsx-a11y/label-has-associated-control: ['error', { assert: 'either' }],
+    prettier/prettier: 'warn',
+    react/destructuring-assignment: ['error', 'never'],
+    react/function-component-definition:
+      ['error', { namedComponents: 'arrow-function' }],
+    react/jsx-filename-extension: ['error', { extensions: ['.ts', '.tsx'] }],
+    react/prop-types: 'off',
+    react/react-in-jsx-scope: 'off',
+    react/require-default-props: 'off',
+    no-shadow: 'off',
+    camelcase: ['error'],
+  }
