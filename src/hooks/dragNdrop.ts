@@ -189,7 +189,6 @@ export default function useDragNDrop(props: Props) {
 
   const checkForBugs = useCallback((event) => {
     let presenceOfBugs = false;
-    const kek_puk = 'kek';
     document.addEventListener('contextmenu', contextMenuHandler);
     const isDraggableElem = event.target.closest('.small-card_draggable')
       || event.target.closest('.big-card_draggable');
