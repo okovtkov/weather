@@ -17,3 +17,5 @@ jobs:
         run: npm install
       - name: Run linter
         run: npm run lint
+      - name: Run stylelint
+        run: npm run lint:css
