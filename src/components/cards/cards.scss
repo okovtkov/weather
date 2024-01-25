@@ -3,7 +3,7 @@
   justify-content: space-between;
   width: 100%;
   height: 880px;
-  padding: 2px 4px 0 4px;
+  padding: 2px 4px 0;
   box-sizing: border-box;
 }
 
@@ -14,7 +14,6 @@
   overflow-y: scroll;
   -ms-overflow-style: none;
   scrollbar-width: none;
-  overflow: -moz-scrollbars-none;
 }
 
 .cards__small-cards::-webkit-scrollbar { 
@@ -27,13 +26,15 @@
 }
 
 .cards__big-cards {
+  position: relative;
   width: calc(50% - 2px);
   height: 100%;
   padding-bottom: 100px;
   overflow: auto;
-
   -ms-overflow-style: none;
   scrollbar-width: none;
+  scroll-behavior: smooth;
+  z-index: 1;
 }
 
 .cards__big-cards_visible {
@@ -52,22 +53,14 @@
   margin-bottom: 80px;
 }
 
-.cards__big-cards {
-  position: relative;
-  z-index: 1;
-  scroll-behavior: smooth;
-}
-
 .cards__help {
   position: absolute;
   top: 56px;
   left: 0;
   z-index: -1;
-
   width: 100%;
   padding-right: 65px;
   padding-left: 65px;
-
   line-height: 32px;
   text-align: center;
   color: var(--color-text-help);

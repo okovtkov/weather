@@ -9,13 +9,10 @@
 .input-wrapper--search input {
   width: 254px;
   padding: 8px 20px;
-
   color: var(--color-text-input);
-
   background-color: var(--color-input-base);
   border: none;
   outline: none;
-
   transition: background-color var(--transition-base);
   font-family: inherit;
   font-size: inherit;
@@ -30,7 +27,7 @@
   opacity: 0;
 }
 
-.input-wrapper--search input:focus::-ms-input-placeholder {
+.input-search input:focus {
   opacity: 0;
 }
 
@@ -40,13 +37,11 @@
 
 .input-wrapper--search input::placeholder {
   color: var(--color-text-placeholder);
-
   transition: opacity var(--transition-base);
 }
 
-.input-wrapper--search input::-ms-input-placeholder {
+.input-search input {
   color: var(--color-text-placeholder);
-
   transition: opacity var(--transition-base);
 }
 
@@ -57,14 +52,11 @@
   align-items: center;
   width: 40px;
   height: 40px;
-
   background-color: var(--color-label-base);
   border-radius: 2px;
   cursor: pointer;
-
   transition: background-color var(--transition-base),
   box-shadow var(--transition-base);
-
   user-select: none;
 }
 
@@ -75,7 +67,7 @@
 .input-wrapper--radio label:hover,
 .input-wrapper--checkbox label:hover {
   background-color: var(--color-label-hover);
-  box-shadow: 0 4px 10px rgba(11, 23, 78, 0.5);
+  box-shadow: 0 4px 10px rgb(11 23 78 / 50%);
 }
 
 .input-wrapper--radio label:active,
@@ -96,11 +88,9 @@
 .input-wrapper--radio input,
 .input-wrapper--checkbox input {
   position: absolute;
-
   width: 1px;
   height: 1px;
   margin: -1px;
-
   clip: rect(0 0 0 0);
 }
 
@@ -112,7 +102,6 @@
 .input-wrapper--radio input:disabled + label,
 .input-wrapper--checkbox input:disabled + label {
   opacity: 0.5;
-
   pointer-events: none;
 }
 

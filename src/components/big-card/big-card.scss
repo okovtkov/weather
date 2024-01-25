@@ -4,11 +4,9 @@
   align-items: center;
   width: 350px;
   min-height: 172px;
-
   border-radius: 2px;
   outline: none;
   cursor: pointer;
-
   transition: filter var(--transition-base);
 }
 
@@ -21,19 +19,15 @@
   display: flex;
   align-items: center;
   width: 100%;
-  padding: 20px 20px 14px 20px;
-
+  padding: 20px 20px 14px;
   background-color: var(--color-white);
-
   transition: background-color var(--transition-base);
 }
 
 .big-card__city {
   margin-left: 20px;
-
   font-size: 30px;
   line-height: 36px;
-
   transition: color var(--transition-base);
 }
 
@@ -42,9 +36,7 @@
   align-items: center;
   width: 100%;
   padding: 16px 24px 24px 20px;
-
   background-color: var(--color-light-grey);
-
   transition: background-color var(--transition-base);
 }
 
@@ -72,23 +64,17 @@
 
 .big-card__info {
   margin-left: 10px;
-
   color: var(--color-text-light-blue);
-
   opacity: 0.8;
-
   transition: color var(--transition-base);
 }
 
 .big-card__temperature {
   margin-left: auto;
-
   font-size: 64px;
   line-height: 62px;
   letter-spacing: -0.05em;
-
   opacity: 0.8;
-
   transition: color var(--transition-base);
 }
 
@@ -126,7 +112,7 @@
 
 .big-card:active,
 .big-card_selected {
-  filter: drop-shadow(0 8px 20px rgba(11, 23, 78, 0.5));
+  filter: drop-shadow(0 8px 20px rgb(11 23 78 / 50%));
 }
 
 .big-card_selected .big-card__header {
