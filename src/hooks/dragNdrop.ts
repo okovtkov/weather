@@ -182,9 +182,10 @@ export default function useDragNDrop(props: Props) {
   );
 
   const contextMenuHandler = useCallback((event) => {
-    mouseUpHandler(event);
+    event.preventDefault();
+    // mouseUpHandler(event);
     document.removeEventListener('contextmenu', contextMenuHandler);
-  }, [mouseUpHandler]);
+  }, []);
 
   const checkForBugs = useCallback((event) => {
     let presenceOfBugs = false;

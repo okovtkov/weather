@@ -3,12 +3,10 @@
   align-items: center;
   width: 350px;
   padding: 16px 20px;
-
   background-color: var(--color-light-grey);
   border-radius: 2px;
   outline: none;
   cursor: pointer;
-
   transition: background-color var(--transition-base), filter var(--transition-base);
 }
 
@@ -34,22 +32,19 @@
 .small-card__city {
   flex-grow: 1;
   margin-right: 20px;
-
   transition: color var(--transition-base);
 }
 
 .small-card__temperature {
   margin-right: 20px;
-
   font-size: 24px;
   line-height: 24px;
   letter-spacing: -0.02em;
-
   transition: color var(--transition-base);
 }
 
 .small-card:active {
-  filter: drop-shadow(0 8px 20px rgba(11, 23, 78, 0.5));
+  filter: drop-shadow(0 8px 20px rgb(11 23 78 / 50%));
 }
 
 .small-card--shadow {
@@ -65,6 +60,6 @@
 .small-card--empty {
   pointer-events: none;
   min-height: 56px;
-  background-color: rgba(247, 248, 255, 0.3);
+  background-color: rgb(247 248 255 / 30%);
   border: 2px dashed var(--color-border);
 }
